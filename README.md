@@ -1,10 +1,10 @@
-# Hollow 0.69 — Crew and cargo overview
+# Hollow 0.70 — Guided first expedition
 
 A playable Godot prototype of an underground colony expedition. The title is provisional.
 
 Canonical native source: [xDoomKitty/Hollow](https://github.com/xDoomKitty/Hollow). The original 71-commit native history is preserved in a recovery bundle; attaching those commits to the branch graph is still pending (see `docs/GITHUB_IMPORT.md`). Start with `AGENTS.md`, `docs/DIRECTION.md`, `docs/ROADMAP.md` and `docs/CHECKPOINT.md` before development. Private Android signing material is stored separately.
 
-Android, Windows and Linux exports are built for version 0.69. The Android APK uses the same preserved prototype certificate as earlier updates; no replacement key was generated. Current source and tests are available in this repository.
+Android, Windows and Linux exports are built for version 0.70. The Android APK uses the same preserved prototype certificate as earlier updates; no replacement key was generated. Current source and tests are available in this repository.
 
 ## Play
 
@@ -14,7 +14,9 @@ Windows: extract **Hollow-Windows.zip** and run **Hollow.exe**. The 64-bit execu
 
 Linux: extract **Hollow-Linux.zip**, allow **Hollow.x86_64** to execute if your archive tool discarded its executable flag, and launch it.
 
-Tap Begin the descent. Select Ash or Iona, then tap ground to move or an object to walk over and interact. Tap the traveler to talk; tap Shelter supplies to walk there, search and open its inventory. Bedrolls order rest, spent alarms order reset, stairs order travel, and settlement or spring options open on arrival. The sidebar still offers explicit actions. Pause holds orders until Play. Drag the map to look around. Press anywhere on an inventory, journal, build list or command list and drag up or down to scroll; a short tap selects a row. Select an item on the left, choose a quantity, and Take. Select an item in the colonist's pack on the right to Store, Drop, or Use it. Transfers happen after the colonist walks to the container.
+Tap Begin the descent. The objective bar now guides the first physical expedition through four concrete steps: speak to the traveler, search Shelter supplies, move 4 timber plus 2 scrap into one pack, and build a Workbench. Select Ash or Iona, then tap ground to move or an object to walk over and interact. Bedrolls order rest, spent alarms order reset, stairs order travel, and settlement or spring options open on arrival. The sidebar still offers explicit actions. Pause holds orders until Play. Drag the map to look around. Press anywhere on an inventory, journal, build list or command list and drag up or down to scroll; a short tap selects a row.
+
+Inventory rows label exact ownership and unit weight. Before an order is issued, the transfer preview names the source and destination, shows both before/after quantities, totals the moved weight, and previews the resulting pack load. The action button names where the goods will go. Select from storage to move goods into the current colonist's pack, or select from the pack to return, drop, use, or equip them. Transfers remain physical and happen only after the colonist reaches the container.
 
 Turn **Queue** on to chain up to four waiting orders for the selected colonist. Numbered map markers and the side panel show what happens next. A useful opening chain is: move near the supplies, take 4 timber, take 2 scrap, then place a workbench. The queue restarts safely after loading; **Clear** removes current and waiting work without moving any items remotely.
 

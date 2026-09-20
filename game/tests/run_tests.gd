@@ -226,6 +226,19 @@ func test_expedition_overview():
 	check(gated.order_regroup(1,0).contains("Bellwether"),"A blocked campaign gate is visible before another regroup attempt")
 
 func _initialize():
+	group("Opening guidance advances through physical first steps")
+	var opening=fresh(690)
+	check(opening.objective().contains("FIRST STEPS 1/4") and opening.objective().contains("Tap the traveler"),"New expeditions name the first direct interaction")
+	opening.data.traveler=true;opening.data.rumor=true
+	check(opening.objective().contains("FIRST STEPS 2/4") and opening.objective().contains("Shelter supplies"),"Traveler history advances guidance to the physical supply search")
+	var shelter=opening.floor_at(0).containers.filter(func(container):return container.name=="Shelter supplies")[0]
+	shelter.searched=true
+	check(opening.objective().contains("FIRST STEPS 3/4") and opening.objective().contains("4 timber + 2 scrap"),"Searched supplies advance guidance to an exact one-pack transfer")
+	opening.data.pawns[0].inventory.timber=4;opening.data.pawns[0].inventory.scrap=2
+	check(opening.objective().contains("FIRST STEPS 4/4") and opening.objective().contains("Workbench"),"A ready pack advances guidance to direct construction")
+	opening.floor_at(0).structures.append(opening.make_structure("bench",Vector2i(8,6)))
+	opening.data.built_total=1
+	check(opening.objective().contains("transit ruins"),"A completed workbench hands off to the existing campaign objective")
 	test_expedition_overview()
 	test_interaction_orders()
 	group("Seeded floors are reproducible, distinct, and wholly connected")

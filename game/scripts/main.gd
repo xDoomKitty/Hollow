@@ -1209,10 +1209,10 @@ func show_intro():
 	world.data.paused = true
 	var col = make_popup("THE WORLD ABOVE IS GONE",740)
 	popup_kind="intro"
-	var intro = text_label("Ash and Iona followed the last working stairwell underground.\n\nA traveler waits beside the shelter. Listen to their story, search the old supplies, and build a foothold in the dark.\n\nCamps offer safety for a while. Their warmth can also tell the things above exactly where you are.",20)
+	var intro = text_label("Ash and Iona followed the last working stairwell underground. A traveler waits beside the shelter.\n\nFIRST STEPS\n1 · Tap the traveler — a colonist walks over and speaks on arrival.\n2 · Tap Shelter supplies and search it.\n3 · Open Inventory and move 4 timber + 2 scrap into one pack.\n4 · Open Build, choose Selected Colonist and place a Workbench.\n\nCamps offer safety for a while. Their warmth can also tell the things above exactly where you are.",19)
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(intro)
-	col.add_child(text_label("Select a colonist · tap ground to move · drag the map\nPause to plan · Inventory to choose items · Build to place a camp",17,"9dbbb0"))
+	col.add_child(text_label("The objective bar keeps the current step visible. Lists scroll by pressing and dragging up or down.",17,"9dbbb0"))
 	col.add_child(button("Begin the descent",func(): started=true; world.data.paused=false; close_popup(); _refresh(),54,true))
 
 func show_story():
@@ -2647,7 +2647,7 @@ func open_inventory(container_id: int = -1):
 		pane.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 		pane.custom_minimum_size.x=330
 		panes.add_child(pane)
-		var title=text_label("STORAGE / TAKE" if source=="take" else p.name.to_upper()+" / PUT AWAY",17,"d1bc91")
+		var title=text_label("FROM STORAGE → "+p.name.to_upper()+" PACK" if source=="take" else "FROM "+p.name.to_upper()+" PACK → STORAGE",17,"d1bc91")
 		pane.add_child(title)
 		var scroll=scroll_list()
 		scroll.custom_minimum_size.y=154
@@ -2714,7 +2714,7 @@ func refresh_inventory():
 		for direction in ["take","store"]:
 			var b=inv_rows[direction+":"+item]
 			var amount = int(p.inventory.get(item,0)) if direction=="store" else int(c.get("items",{}).get(item,0)) if searched else 0
-			b.text=("● " if inv_direction==direction and inv_item==item else "")+World.ITEMS[item].name+"   "+(str(amount) if direction=="store" or searched else "?")+"   %.1f kg" % World.ITEMS[item].weight
+			b.text=("● " if inv_direction==direction and inv_item==item else "")+World.ITEMS[item].name+" · owned "+(str(amount) if direction=="store" or searched else "?")+" · %.1f kg each" % World.ITEMS[item].weight
 			b.disabled=amount==0
 	var amount=int(p.inventory.get(inv_item,0)) if inv_direction=="store" else int(c.get("items",{}).get(inv_item,0)) if searched else 0
 	var limit=amount if inv_direction=="store" else min(amount,world.free_units(p,inv_item))
@@ -2734,13 +2734,20 @@ func refresh_inventory():
 	if not p.job.is_empty() and not queue_mode: inv_action.text="Busy · turn Queue on"; inv_action.disabled=true
 	elif not c.is_empty() and not c.searched: inv_action.text=("Queue search" if queue_mode else "Search this container"); inv_action.disabled=false
 	else:
-		inv_action.text=("Queue " if queue_mode else "")+("take " if inv_direction=="take" else "store ")+str(inv_quantity)+" "+World.ITEMS[inv_item].name.to_lower()
+		inv_action.text=("Queue " if queue_mode else "")+("Move " if inv_direction=="take" else "Return ")+str(inv_quantity)+" "+World.ITEMS[inv_item].name.to_lower()+(" → "+p.name+" pack" if inv_direction=="take" else " → "+str(c.get("name","storage")))
 		inv_action.disabled=limit<1 or c.is_empty()
 	if not p.job.is_empty(): inv_status.text=("Queue mode is on; add this after current work." if queue_mode else p.name+" is working. Turn Queue on to add another order.")
 	elif not searched: inv_status.text="Contents stay hidden until this container is searched."
 	elif stockpile and limit<1: inv_status.text="Idle colonists haul accepted items here. Toggle the selected item above."
 	elif limit<1: inv_status.text="Select an item on either side. Put something away if the pack is full."
-	else: inv_status.text="Exact quantities. Items move only after the colonist reaches the container."
+	else:
+		var pack_before=world.weight(p.inventory)
+		var move_weight=float(World.ITEMS[inv_item].weight)*inv_quantity
+		var pack_after=pack_before+(move_weight if inv_direction=="take" else -move_weight)
+		var destination_before=int(p.inventory.get(inv_item,0)) if inv_direction=="take" else int(c.get("items",{}).get(inv_item,0))
+		var source_name=str(c.get("name","Storage")) if inv_direction=="take" else p.name+" pack"
+		var destination_name=p.name+" pack" if inv_direction=="take" else str(c.get("name","Storage"))
+		inv_status.text="MOVE %d %s · %.1f kg total\n%s %d → %d   ⟶   %s %d → %d · pack %.1f → %.1f / 12 kg\nItems stay owned until %s reaches the container." % [inv_quantity,World.ITEMS[inv_item].name.to_lower(),move_weight,source_name,amount,amount-inv_quantity,destination_name,destination_before,destination_before+inv_quantity,pack_before,pack_after,p.name]
 	if inv_error!="": inv_status.text=inv_error
 
 func toggle_auto_haul():

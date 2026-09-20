@@ -8364,8 +8364,15 @@ func objective() -> String:
 		if morrow_gathered()<2:return "MORROW DEPARTURE · %d seconds · rally at least two living colonists beside the dispatcher."%int(ceil(float(data.morrow_timer)))
 		return "MORROW DEPARTURE · %d seconds · present the physical waybill and board together."%int(ceil(float(data.morrow_timer)))
 	if data.registry_state in ["official","resident"] and data.deepest>=29:return "At Morrow Exchange, bring the physical waybill to call the "+("authority" if data.registry_state=="official" else "ghost-line")+" freight train."
-	if not data.rumor: return "Speak to the traveler near the shelter."
-	if data.built_total == 0: return "Search the shelter supplies. Build your first camp."
+	if not data.rumor:return "FIRST STEPS 1/4 · Tap the traveler. Ash will walk over and speak on arrival."
+	if data.built_total==0:
+		if data.deepest==0:
+			var shelter=floor_at(0).containers.filter(func(container):return container.get("name","")=="Shelter supplies")
+			if not shelter.is_empty() and not bool(shelter[0].get("searched",false)):return "FIRST STEPS 2/4 · Tap Shelter supplies, then Search this container."
+			var ready=data.pawns.any(func(pawn):return int(pawn.z)==0 and int(pawn.inventory.get("timber",0))>=4 and int(pawn.inventory.get("scrap",0))>=2)
+			if not ready:return "FIRST STEPS 3/4 · Inventory: move 4 timber + 2 scrap from Shelter supplies into one colonist's pack."
+			return "FIRST STEPS 4/4 · Build → Selected Colonist → Workbench, then tap a clear floor tile."
+		return "Search the shelter supplies. Build your first camp."
 	if data.registry_state in ["official","resident"]:return "The physical Morrow freight waybill names the lower authority's deepest active destination. Haul its supplies or descend."
 	if data.registry_state=="assigned":
 		if floor_at(28).enemies.any(func(enemy):return enemy.hp>0):return "Clear the burrowers from Cinder Registry's charred audit vault."
