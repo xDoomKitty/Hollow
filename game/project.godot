@@ -7,7 +7,7 @@ config/description="An underground colony on the edge of the dark."
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://assets/icon.svg"
-config/version="0.68.0"
+config/version="0.69.0"
 
 [display]
 window/size/viewport_width=960

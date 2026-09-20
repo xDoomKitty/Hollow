@@ -1,8 +1,10 @@
-# Hollow 0.68 — Direct interaction and drag scrolling
+# Hollow 0.69 — Crew and cargo overview
 
 A playable Godot prototype of an underground colony expedition. The title is provisional.
 
-Canonical native source: [xDoomKitty/Hollow](https://github.com/xDoomKitty/Hollow). The repository preserves the original development history. Start with `AGENTS.md`, `docs/DIRECTION.md`, `docs/ROADMAP.md` and `docs/CHECKPOINT.md` before development. Private Android signing material is stored separately.
+Canonical native source: [xDoomKitty/Hollow](https://github.com/xDoomKitty/Hollow). The original 71-commit native history is preserved in a recovery bundle; attaching those commits to the branch graph is still pending (see `docs/GITHUB_IMPORT.md`). Start with `AGENTS.md`, `docs/DIRECTION.md`, `docs/ROADMAP.md` and `docs/CHECKPOINT.md` before development. Private Android signing material is stored separately.
+
+Windows and Linux exports were built for version 0.69. Android remains on the last-good 0.68 build until the preserved signing key can be retrieved; the transfer currently returns HTTP 502. No replacement certificate or differently signed Android update has been produced.
 
 ## Play
 
@@ -15,6 +17,10 @@ Linux: extract **Hollow-Linux.zip**, allow **Hollow.x86_64** to execute if your 
 Tap Begin the descent. Select Ash or Iona, then tap ground to move or an object to walk over and interact. Tap the traveler to talk; tap Shelter supplies to walk there, search and open its inventory. Bedrolls order rest, spent alarms order reset, stairs order travel, and settlement or spring options open on arrival. The sidebar still offers explicit actions. Pause holds orders until Play. Drag the map to look around. Press anywhere on an inventory, journal, build list or command list and drag up or down to scroll; a short tap selects a row. Select an item on the left, choose a quantity, and Take. Select an item in the colonist's pack on the right to Store, Drop, or Use it. Transfers happen after the colonist walks to the container.
 
 Turn **Queue** on to chain up to four waiting orders for the selected colonist. Numbered map markers and the side panel show what happens next. A useful opening chain is: move near the supplies, take 4 timber, take 2 scrap, then place a workbench. The queue restarts safely after loading; **Clear** removes current and waiting work without moving any items remotely.
+
+Open **Crew** to pause and locate everyone across explored depths. Cards show condition, fatigue, current work, pack weight and essential cargo. **Find** follows a colonist; **Pack** opens their own inventory. **Join depth** physically travels through connected stairs toward the selected colonist's floor, stopping at blocked routes or story gates. **Rally by** brings an idle colonist to the selected colonist's position on the same floor. Busy, drafted or incapacitated colonists are left alone with a visible reason. Close the planner and press **Play** to carry out orders.
+
+The **Cargo** tab searches known goods by item or owner. Toggle **Essential cargo / All cargo** to include ordinary supplies and worn equipment. Unsearched or unexplored containers remain unknown. **Find owner** selects the actual carrier; **Locate storage** shows that remembered floor without moving goods. A different floor is marked **VIEW ONLY** and cannot receive map orders; **Follow** returns to the selected colonist.
 
 Open **Build** in Colony Blueprint mode, choose a structure and tap a clear tile. Its ghost plan shows delivered materials; safe idle colonists reserve distinct loads, physically supply the recipe and then claim the construction work. Tap a blueprint to approach and review its materials, then construct or explicitly cancel it; delivered goods remain physical. Switch the Build menu to Selected Colonist when you want the original direct, pack-funded construction instead.
 

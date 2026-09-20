@@ -1,15 +1,22 @@
 """Package committed native source/history and working game exports with notices."""
 import hashlib
+import argparse
 import json
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import zipfile
 
+parser = argparse.ArgumentParser()
+parser.add_argument("destination")
+parser.add_argument("--skip-android", action="store_true", help="Package working desktop exports while retaining the last-good Android download separately")
+args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parents[1]
-destination = pathlib.Path(sys.argv[1]).resolve()
+version = re.search(r'^config/version="([^"]+)"$', (root / "game/project.godot").read_text(), re.MULTILINE).group(1)
+destination = pathlib.Path(args.destination).resolve()
 destination.mkdir(parents=True, exist_ok=True)
 status = subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True)
 if status.strip():
@@ -26,11 +33,12 @@ for platform, executable in [("Windows", "Hollow.exe"), ("Linux", "Hollow.x86_64
         archive.write(source, name + "/" + executable)
         archive.writestr(name + "/README.md", readme)
         archive.writestr(name + "/ENGINE_NOTICES.txt", notices)
-        archive.writestr(name + "/BUILD.txt", "Hollow 0.68.0\nGodot 4.5.1\nSource revision: " + revision + "\n")
+        archive.writestr(name + "/BUILD.txt", "Hollow " + version + "\nGodot 4.5.1\nSource revision: " + revision + "\n")
     files.append(archive_path)
-apk = destination / "Hollow-Android.apk"
-shutil.copy2(root / "releases/Hollow-Android.apk", apk)
-files.append(apk)
+if not args.skip_android:
+    apk = destination / "Hollow-Android.apk"
+    shutil.copy2(root / "releases/Hollow-Android.apk", apk)
+    files.append(apk)
 tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
 archive_path = destination / "Hollow_Source.zip"
 with tempfile.TemporaryDirectory(prefix="hollow-bundle-") as temp:
@@ -42,7 +50,7 @@ with tempfile.TemporaryDirectory(prefix="hollow-bundle-") as temp:
                 archive.write(root / name, "Hollow-Source/" + name)
         archive.write(bundle, "Hollow-history.bundle")
 files.append(archive_path)
-manifest = {"version": "0.68.0", "revision": revision, "files": {}}
+manifest = {"version": version, "revision": revision, "files": {}, "excluded_platforms": ["Android"] if args.skip_android else []}
 for path in files:
     with zipfile.ZipFile(path) as archive:
         if archive.testzip() is not None:

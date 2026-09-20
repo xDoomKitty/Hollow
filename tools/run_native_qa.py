@@ -13,7 +13,7 @@ args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parents[1]
 godot = os.environ.get("HOLLOW_GODOT", str(root / "tools/Godot_v4.5.1-stable_linux.x86_64"))
 (root / "qa").mkdir(exist_ok=True)
-for script, log in [("ui_playtest.gd", "native-ui.log"), ("input_playtest.gd", "native-input.log")]:
+for script, log in [("ui_playtest.gd", "native-ui.log"), ("input_playtest.gd", "native-input.log"), ("expedition_playtest.gd", "native-expedition.log")]:
     with tempfile.TemporaryDirectory(prefix="hollow-qa-") as profile:
         command = [godot, "--path", str(root / "game"), "--audio-driver", "Dummy", "--script", "res://tests/" + script]
         if not args.visual:

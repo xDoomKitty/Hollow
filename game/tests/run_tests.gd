@@ -163,7 +163,70 @@ func test_interaction_orders():
 	var bad=JSON.parse_string(queued.serialize());bad.pawns[0].orders[1].extra.id=-5;var stable=qsave.serialize()
 	check(not qsave.restore(JSON.stringify(bad)) and qsave.serialize()==stable,"Malformed interaction identities fail save restore atomically")
 
+func test_expedition_overview():
+	group("Expedition manifest preserves known ownership and physical regrouping")
+	var w=fresh();var ash=w.data.pawns[0];var iona=w.data.pawns[1]
+	ash.inventory={"convoy_tally":1,"scrap":3};iona.inventory={"compass":1};iona.equipment.body="armor"
+	var cache=w.floor_at(0).containers[0];cache.items={"roadstead_jack":1,"timber":2}
+	cache.searched=false;w.floor_at(0).seen[w.cell_key(w.point(cache))]=true
+	var before=w.data.duplicate(true)
+	var manifest=w.expedition_cargo()
+	check(manifest.size()==2 and manifest[0].pawn==0 and manifest[1].pawn==1,"Essential cargo lists each actual pack owner")
+	check(w.data==before,"Reading the manifest changes no world history or inventory")
+	check(w.expedition_cargo(true,"jack").is_empty(),"Unsearched containers do not reveal their contents")
+	cache.searched=true
+	var jack=w.expedition_cargo(true,"JACK")
+	check(jack.size()==1 and jack[0].container==cache.id and jack[0].quantity==1,"Known storage preserves exact quantities and identity with case-insensitive search")
+	jack[0].quantity=99
+	check(cache.items.roadstead_jack==1,"Manifest entries cannot mutate physical storage")
+	w.floor_at(0).seen.erase(w.cell_key(w.point(cache)))
+	check(w.expedition_cargo(true,"jack").is_empty(),"Unexplored stored locations remain undisclosed")
+	w.floor_at(0).seen[w.cell_key(w.point(cache))]=true
+	check(w.expedition_cargo(false,"iona").size()==2,"Owner search includes pack cargo and worn equipment exactly once")
+	check(w.expedition_cargo(false,"scrap")[0].quantity==3 and w.expedition_cargo(true,"scrap").is_empty(),"All cargo includes exact supplies while essentials omit them")
+	check(w.expedition_cargo(true,"impossible").is_empty(),"An unmatched cargo search has no fabricated result")
+	for z in 3:w.ensure_floor(z);w.floor_at(z).enemies.clear()
+	for pawn in w.data.pawns:pawn.work={"haul":0,"build":0}
+	ash.z=2;var anchor=w.vec(w.floor_at(2).up);ash.x=anchor.x;ash.y=anchor.y
+	w.reveal_all();w.data.paused=true
+	var carried=iona.inventory.duplicate(true);var original=w.point(iona)
+	check(w.order_regroup(1,0)=="" and iona.job.kind=="travel" and int(iona.job.extra.destination)==2,"Regroup creates a connected multi-floor travel order")
+	w.tick(1.0)
+	check(iona.z==0 and w.point(iona)==original and iona.inventory==carried,"Paused regroup never teleports a colonist or their cargo")
+	var restored=fresh();check(restored.restore(w.serialize()),"A saved regroup order restores with the existing save format")
+	restored.data.paused=false;finish_all(restored,1)
+	check(restored.data.pawns[1].z==2 and restored.data.pawns[1].inventory==carried,"Restored regroup physically crosses every stair while retaining the original pack")
+	check(restored.data.pawns[0].inventory==ash.inventory,"Regroup never pools the destination colonist's goods")
+	w.cancel(1);check(iona.inventory==carried and iona.z==0,"Canceling travel leaves ownership and floor unchanged")
+	iona.drafted=true;check(w.order_regroup(1,0).contains("Stand down"),"Drafted colonists are not redirected by regroup")
+	iona.drafted=false;iona.injury=3;check(w.order_regroup(1,0).contains("rescue"),"Downed colonists require physical rescue")
+	iona.injury=0;check(w.order_walk(1,Vector2i(8,6))=="","A direct job can be prepared before regroup")
+	var job=iona.job.duplicate(true);check(w.order_regroup(1,0).contains("orders") and iona.job==job,"Regroup preserves active direct orders")
+	w.cancel(1);iona.orders=[{"kind":"walk","target":[8,6],"z":0,"extra":{}}]
+	check(w.order_regroup(1,0).contains("orders") and iona.orders.size()==1,"Waiting orders are not silently replaced")
+	w.cancel(1);check(w.order_regroup(-1,0)!="" and w.order_regroup(1,99)!="","Invalid colonist identities fail safely")
+	ash.hp=0;check(w.order_regroup(1,0).contains("living"),"A lost colonist cannot be a rally destination");ash.hp=100
+	var blocked=w.make_structure("barricade",w.vec(w.floor_at(0).down));w.floor_at(0).structures.append(blocked)
+	check(w.order_regroup(1,0).contains("route") and iona.job.is_empty(),"A blocked stair gives a reason and does not start partial travel")
+	w.floor_at(0).structures.erase(blocked)
+	ash.z=0;ash.x=11;ash.y=6;w.reveal_all()
+	check(w.order_regroup(1,0)=="" and iona.job.kind=="walk","Same-floor regroup uses a physical walk to the rally position")
+	w.data.paused=false;finish(w,1)
+	check(w.point(iona)==w.point(ash) and iona.inventory==carried,"Rally arrival preserves separate pack ownership")
+	check(w.order_regroup(1,0).contains("gathered"),"Already gathered colonists do not acquire redundant work")
+	var gated=fresh()
+	for z in 9:gated.ensure_floor(z);gated.floor_at(z).enemies.clear()
+	for i in 2:
+		var pawn=gated.data.pawns[i];pawn.z=8 if i==0 else 6
+		var spot=gated.vec(gated.floor_at(int(pawn.z)).down);pawn.x=spot.x;pawn.y=spot.y;pawn.work={"haul":0,"build":0}
+	gated.reveal_all()
+	check(gated.order_regroup(1,0)=="","Regroup can begin toward an already visited deeper floor")
+	finish(gated,1)
+	check(gated.data.pawns[1].z==7 and gated.data.log.any(func(line):return str(line).contains("stopped traveling") and str(line).contains("Bellwether")),"A later story gate stops physical travel and explains why")
+	check(gated.order_regroup(1,0).contains("Bellwether"),"A blocked campaign gate is visible before another regroup attempt")
+
 func _initialize():
+	test_expedition_overview()
 	test_interaction_orders()
 	group("Seeded floors are reproducible, distinct, and wholly connected")
 	for seed_value in [704219,13,29,51,101,903]:

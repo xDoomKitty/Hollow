@@ -58,6 +58,9 @@ var started = false
 var save_problem = ""
 var queue_mode = false
 var interaction_dialogs: Array = []
+var expedition_list: VBoxContainer
+var expedition_essentials = true
+var expedition_query = ""
 
 func scroll_list() -> ScrollContainer:
 	var scroll=DragScroll.new()
@@ -138,6 +141,7 @@ func build_ui():
 	var brand = text_label("H O L L O W",25,"e5c087")
 	brand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(brand)
+	top.add_child(button("Crew",show_expedition,42))
 	top.add_child(button("Journal",show_journal,42))
 	top.add_child(button("Menu",show_menu,42))
 	pause_button = button("PLAY",toggle_pause,42,true)
@@ -325,7 +329,8 @@ func _refresh():
 	if pawn_buttons.size()!=world.data.pawns.size():rebuild_pawn_buttons()
 	var p = world.data.pawns[selected]
 	var f = world.floor_at(p.z)
-	header.text = "DEPTH %02d / %s" % [p.z+1,f.name.to_upper()]
+	header.text = "DEPTH %02d / %s" % [map.depth+1,world.floor_at(map.depth).name.to_upper()]
+	if int(map.depth)!=int(p.z):header.text+=" · VIEW ONLY"
 	pause_button.text = "PLAY" if world.data.paused else "PAUSE"
 	var pressure=world.pressure_report(int(p.z))
 	var threat = "COLD" if f.heat < 20 else "WARM" if f.heat < 45 else "DRAWING ATTENTION"
@@ -612,6 +617,9 @@ func retreat_together():
 	_refresh();save_game()
 
 func _map_clicked(tile: Vector2i,right: bool):
+	if int(map.depth)!=int(world.data.pawns[selected].z):
+		feedback("This is a remembered floor. Find a colonist here in Crew, or press Follow to return.")
+		return
 	if building!="":_select_map_target(tile,right);return
 	selection.clear()
 	_select_map_target(tile,right)
@@ -2764,6 +2772,85 @@ func inventory_action():
 	if not c.is_empty() and not c.searched: execute(world.order_search(selected,inv_id,queue_mode))
 	else: execute(world.order_transfer(selected,inv_id,inv_direction,inv_item,inv_quantity,queue_mode))
 	refresh_inventory()
+
+func expedition_text(parent:Control,text:String,font_size:int=16,color:String="aec0b4"):
+	var label=text_label(text,font_size,color)
+	label.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	parent.add_child(label)
+	return label
+
+func show_expedition(tab:String="crew"):
+	var col=make_popup("CREW & CARGO",820)
+	popup_kind="expedition"
+	world.data.paused=true
+	var anchor=world.data.pawns[selected]
+	expedition_text(col,"Paused to plan · Rally toward %s on depth %d. Press Play after closing."%[anchor.name,int(anchor.z)+1])
+	var tabs=HBoxContainer.new();col.add_child(tabs)
+	for section in ["crew","cargo"]:
+		var tab_button=button(section.capitalize(),func():show_expedition(section),44,tab==section)
+		tab_button.size_flags_horizontal=Control.SIZE_EXPAND_FILL;tabs.add_child(tab_button)
+	if tab=="cargo":
+		var filter_row=HBoxContainer.new();col.add_child(filter_row)
+		filter_row.add_child(button("Essential cargo" if expedition_essentials else "All cargo",func():expedition_essentials=not expedition_essentials;show_expedition("cargo"),44))
+		var search=LineEdit.new();search.name="CargoSearch";search.placeholder_text="Find item or owner";search.text=expedition_query
+		search.size_flags_horizontal=Control.SIZE_EXPAND_FILL;search.custom_minimum_size.y=44;search.add_theme_font_size_override("font_size",18)
+		filter_row.add_child(search)
+		search.text_changed.connect(func(value):expedition_query=value;refresh_expedition_cargo())
+	var scroll=scroll_list();scroll.name="ExpeditionScroll"
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size.y=clampf(size.y-(244 if tab=="cargo" else 196),120,390)
+	col.add_child(scroll)
+	expedition_list=VBoxContainer.new();expedition_list.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	expedition_list.add_theme_constant_override("separation",12);scroll.add_child(expedition_list)
+	if tab=="cargo":refresh_expedition_cargo()
+	else:
+		for index in world.data.pawns.size():
+			var pawn=world.data.pawns[index]
+			var card=VBoxContainer.new();expedition_list.add_child(card)
+			expedition_text(card,"%s · D%d · %s"%[pawn.name,int(pawn.z)+1,world.floor_at(int(pawn.z)).name],19,"ecd4a4")
+			var condition="Lost" if pawn.hp<=0 else "Needs rescue" if world.incapacitated(pawn) else "Drafted" if pawn.drafted else "Ready"
+			var task="Idle" if pawn.job.is_empty() else describe_order(pawn.job)
+			expedition_text(card,"%s · HP %d · Fatigue %d%% · Pack %.1f / 12 kg\n%s · %d queued"%[condition,int(pawn.hp),int(pawn.fatigue),world.weight(pawn.inventory),task,pawn.orders.size()])
+			var important:Array=[]
+			for cargo in world.expedition_cargo():
+				if int(cargo.pawn)==index:important.append("%s ×%d"%[World.ITEMS[cargo.item].name,cargo.quantity])
+			if not important.is_empty():expedition_text(card," · ".join(important),15,"c9b987")
+			var actions=HBoxContainer.new();card.add_child(actions)
+			actions.add_child(button("Find "+str(pawn.name),func():close_popup();select_pawn(index),44))
+			var pack_button=button("Pack",func():close_popup();select_pawn(index);open_inventory(),44)
+			pack_button.disabled=pawn.hp<=0;actions.add_child(pack_button)
+			var error=world.regroup_error(index,selected)
+			var rally=button("Join depth %d"%(int(anchor.z)+1) if int(pawn.z)!=int(anchor.z) else "Rally by "+str(anchor.name),func():
+				var result=world.order_regroup(index,selected)
+				feedback(result if result!="" else str(world.data.pawns[index].name)+" has a physical rally order. Press Play to move.")
+				save_game();show_expedition(),44)
+			rally.size_flags_horizontal=Control.SIZE_EXPAND_FILL;rally.disabled=error!="";actions.add_child(rally)
+			if error!="":expedition_text(card,error,14)
+			elif int(pawn.z)!=int(anchor.z):expedition_text(card,"Uses connected stairs; stops at blocked routes or gates. Rally again after arrival to walk to the group.",14)
+	_refresh()
+
+func refresh_expedition_cargo():
+	if not is_instance_valid(expedition_list) or popup_kind!="expedition":return
+	for child in expedition_list.get_children():expedition_list.remove_child(child);child.queue_free()
+	var cargo=world.expedition_cargo(expedition_essentials,expedition_query)
+	if cargo.is_empty():expedition_text(expedition_list,"No matching known cargo. Search containers to learn what they hold.")
+	for entry in cargo:
+		var card=VBoxContainer.new();expedition_list.add_child(card)
+		expedition_text(card,"%s ×%d · %.1f kg"%[World.ITEMS[entry.item].name,entry.quantity,float(World.ITEMS[entry.item].weight)*int(entry.quantity)],18,"ecd4a4")
+		expedition_text(card,"%s · D%d · %s"%[entry.owner,int(entry.z)+1,world.floor_at(int(entry.z)).name])
+		card.add_child(button("Find owner" if int(entry.pawn)>=0 else "Locate storage",func():locate_cargo(entry),44))
+
+func locate_cargo(entry:Dictionary):
+	if int(entry.pawn)>=0:
+		close_popup();select_pawn(int(entry.pawn));return
+	var z=int(entry.z)
+	var container=world.container_by_id(z,int(entry.container))
+	if container.is_empty() or not container.searched or not world.floor_at(z).seen.has(world.cell_key(world.point(container))):return
+	close_popup();selection.clear();building="";map.building=""
+	map.depth=z;map.follow=false;map.focus=Vector2(container.x+.5,container.y+.5)
+	feedback("%s · depth %d. Cargo stays here until a colonist carries it."%[container.name,z+1])
+	_refresh()
 
 func show_journal():
 	var col=make_popup("FIELD JOURNAL",820)

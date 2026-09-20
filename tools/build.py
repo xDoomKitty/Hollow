@@ -31,5 +31,6 @@ for target, filename in [("Windows", "Hollow-Windows/Hollow.exe"), ("Linux", "Ho
     output.parent.mkdir(parents=True, exist_ok=True)
     run(target.lower()+"-export", base + ["--export-release", target, str(output)])
 if args.android:
+    run("android-signing", [sys.executable, str(root / "tools/verify_android_signing.py")])
     run("android-export", base + ["--export-debug", "Android", str(root / "releases/Hollow-Android.apk")])
 print("Exports complete. Verify packages and keep their engine notices before distribution.")

@@ -5920,8 +5920,11 @@ func order_reset_alarm(index:int,structure_id:int,queued:bool=false)->String:
 	var extra={"structure":structure_id}
 	return enqueue_order(index,"reset_alarm",point(structure),extra) if queued else issue(index,"reset_alarm",point(structure),extra)
 
-func order_travel(index: int, destination: int, queued: bool = false) -> String:
+func travel_error(index: int, destination: int) -> String:
+	if index<0 or index>=data.pawns.size():return "Select a colonist."
 	var p = data.pawns[index]
+	if p.hp<=0:return "This colonist is lost."
+	if incapacitated(p):return "This colonist needs rescue before traveling."
 	if destination < 0: return "The surface is lethal. Stay below."
 	if destination == p.z: return "Already on that level."
 	if int(p.z)==7 and destination>int(p.z) and data.bellwether_choice=="":return "Choose a Bellwether route at the lift control first."
@@ -5974,9 +5977,74 @@ func order_travel(index: int, destination: int, queued: bool = false) -> String:
 	if int(p.z)==50 and destination>int(p.z) and not data.march_refuge_state in ["guarded","sheltered","public","walled"]:return "Settle Marchhold Refuge's communal defense before using the deep resident road."
 	if int(p.z)==51 and destination>int(p.z) and not data.wallward_state in ["escorted","screened","missed"]:return "Resolve Wallward's warned convoy rendezvous before using the Wayfarer road."
 	if int(p.z)==52 and destination>int(p.z) and not data.wayfarer_state in ["resident","hidden","public"]:return "Repair Wayfarer's shared roadstead before using the Underway road."
+	return ""
+
+func order_travel(index: int, destination: int, queued: bool = false) -> String:
+	var error=travel_error(index,destination)
+	if error!="":return error
+	var p=data.pawns[index]
 	var f = floor_at(p.z)
 	var target = vec(f.down if destination > p.z else f.up)
 	return enqueue_order(index,"travel",target,{"destination":destination}) if queued else issue(index,"travel",target,{"destination":destination})
+
+func expedition_cargo(essentials:bool=true,query:String="") -> Array:
+	# A read-only manifest of physical, known goods. Never reveal unopened caches.
+	var rows:Array=[]
+	var supplies=["armor","timber","scrap","rations","medkit","crystal"]
+	var search_text=query.strip_edges().to_lower()
+	for index in data.pawns.size():
+		var pawn=data.pawns[index]
+		for item in ITEMS:
+			if essentials and item in supplies:continue
+			var quantity=int(pawn.inventory.get(item,0))
+			if quantity<=0:continue
+			if search_text!="" and not (str(ITEMS[item].name)+" "+str(pawn.name)).to_lower().contains(search_text):continue
+			rows.append({"item":item,"quantity":quantity,"owner":str(pawn.name)+"'s pack","pawn":index,"container":-1,"z":int(pawn.z),"x":int(pawn.x),"y":int(pawn.y)})
+		if not essentials and pawn.equipment.get("body","")=="armor" and (search_text=="" or (str(ITEMS.armor.name)+" "+str(pawn.name)).to_lower().contains(search_text)):
+			rows.append({"item":"armor","quantity":1,"owner":str(pawn.name)+" · worn","pawn":index,"container":-1,"z":int(pawn.z),"x":int(pawn.x),"y":int(pawn.y)})
+	var depths:Array=[]
+	for key in data.floors:depths.append(int(key))
+	depths.sort()
+	for z in depths:
+		var floor_data=floor_at(z)
+		for container in floor_data.containers:
+			if not container.get("searched",false) or not floor_data.seen.has(cell_key(point(container))):continue
+			for item in ITEMS:
+				if essentials and item in supplies:continue
+				var quantity=int(container.items.get(item,0))
+				if quantity<=0:continue
+				if search_text!="" and not (str(ITEMS[item].name)+" "+str(container.name)).to_lower().contains(search_text):continue
+				rows.append({"item":item,"quantity":quantity,"owner":str(container.name),"pawn":-1,"container":int(container.id),"z":z,"x":int(container.x),"y":int(container.y)})
+	return rows
+
+func regroup_error(index:int,anchor_index:int) -> String:
+	if index<0 or index>=data.pawns.size() or anchor_index<0 or anchor_index>=data.pawns.size():return "Select a colonist."
+	var pawn=data.pawns[index];var anchor=data.pawns[anchor_index]
+	if index==anchor_index:return "Rally destination."
+	if anchor.hp<=0:return "Choose a living colonist as the destination."
+	if pawn.hp<=0:return "Lost."
+	if incapacitated(pawn):return "Needs rescue."
+	if pawn.drafted:return "Stand down before regrouping."
+	if not pawn.job.is_empty() or not pawn.orders.is_empty():return "Finish or clear this colonist's orders first."
+	if int(pawn.z)==int(anchor.z):
+		if point(pawn).distance_to(point(anchor))<=1.5:return "Already gathered."
+		if not floor_at(int(pawn.z)).seen.has(cell_key(point(anchor))):return "Explore the rally point first."
+		if path_to(int(pawn.z),point(pawn),point(anchor)).is_empty():return "No open route to the rally point."
+	else:
+		for z in range(min(int(pawn.z),int(anchor.z)),max(int(pawn.z),int(anchor.z))+1):
+			if not data.floors.has(str(z)):return "Explore the connecting floors first."
+		var error=travel_error(index,int(anchor.z))
+		if error!="":return error
+		var stair=vec(floor_at(int(pawn.z)).down if int(anchor.z)>int(pawn.z) else floor_at(int(pawn.z)).up)
+		if path_to(int(pawn.z),point(pawn),stair).is_empty():return "No open route to the stairs."
+	return ""
+
+func order_regroup(index:int,anchor_index:int) -> String:
+	var error=regroup_error(index,anchor_index)
+	if error!="":return error
+	var pawn=data.pawns[index];var anchor=data.pawns[anchor_index]
+	if int(pawn.z)!=int(anchor.z):return order_travel(index,int(anchor.z))
+	return order_walk(index,point(anchor))
 
 func order_retreat(source:int,destination:int)->Dictionary:
 	var result={"joined":[],"skipped":[],"error":""}
@@ -7591,7 +7659,9 @@ func _finish(index: int):
 			data.deepest = max(int(data.deepest),nz)
 			note(p.name+" reached depth "+str(nz+1)+": "+theme_for(nz)+".")
 			events.append({"kind":"stairs"})
-			if destination != nz: order_travel(index,destination)
+			if destination != nz:
+				var travel_problem=order_travel(index,destination)
+				if travel_problem!="":note(p.name+" stopped traveling: "+travel_problem)
 		"rest":
 			p.hp = min(100.0,p.hp+25.0)
 			p.injury=max(0,int(p.injury)-1)
