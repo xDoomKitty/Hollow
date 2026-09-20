@@ -4,7 +4,7 @@ A playable Godot prototype of an underground colony expedition. The title is pro
 
 Canonical native source: [xDoomKitty/Hollow](https://github.com/xDoomKitty/Hollow). The original 71-commit native history is preserved in a recovery bundle; attaching those commits to the branch graph is still pending (see `docs/GITHUB_IMPORT.md`). Start with `AGENTS.md`, `docs/DIRECTION.md`, `docs/ROADMAP.md` and `docs/CHECKPOINT.md` before development. Private Android signing material is stored separately.
 
-Windows and Linux exports were built and verified for version 0.69, but publishing the download files failed. All existing download identities remain on the last-good 0.68 builds. Android export is separately blocked until the preserved signing key can be retrieved; that download returns HTTP 502. No replacement key or differently signed Android update has been produced. Current 0.69 source and tests are available in this repository.
+Android, Windows and Linux exports are built for version 0.69. The Android APK uses the same preserved prototype certificate as earlier updates; no replacement key was generated. Current source and tests are available in this repository.
 
 ## Play
 
@@ -164,6 +164,6 @@ Source archives include a git bundle and all tracked original source/assets/test
 
 ## Verification and notices
 
-2,020 simulation assertions and 1,562 headless interface/input/layout checks passed. The APK signature and manifest were checked; Windows and Linux exports completed; the exported Linux game launched headlessly. Actual Android/Windows gameplay, graphical rendering and audio have not been verified on physical devices in this workspace. See `docs/VALIDATION.md` for the precise limits.
+2,069 simulation assertions and 1,670 headless interface/input/layout checks passed. The APK signature, package ID, version and manifest were checked; Windows and Linux exports completed; the exported Linux game launched headlessly. Actual Android/Windows gameplay, graphical rendering and audio have not been verified on physical devices in this workspace. See `docs/VALIDATION.md` for the precise limits.
 
 Original game visuals and sound are authored in this project. Godot and its dependencies have separate licenses, included in `game/assets/ENGINE_NOTICES.txt` and the desktop downloads. Preserve these notices when distributing. See `docs/ASSETS.md`.

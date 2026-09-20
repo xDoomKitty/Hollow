@@ -8,13 +8,13 @@ Cargo searches item or owner names, optionally including ordinary supplies and w
 
 Validation: 78 simulation groups / 2,069 assertions and 1,670 native headless input/layout assertions passed. Godot import, Windows/Linux exports and exported Linux headless launch passed. See VALIDATION.md for coverage. Graphical startup failed (no X11/Wayland/Xvfb), and adb reports no devices; no Android/Windows device execution is claimed.
 
-**Android is blocked, not updated.** The preserved PRIVATE signing bundle repeatedly returned HTTP 502 when downloading. No replacement key was generated and no 0.69 APK was exported. Keep the last-good 0.68.0 / code 68 download unchanged. Source/export settings reserve 0.69.0 / code 69 for the eventual correctly signed update. The new signing preflight refuses absent or mismatched keys.
+**Android 0.69 is built and verified.** The original PRIVATE signing bundle transferred successfully on retry. Code 69 retains package `com.hollow.colony.prototype` and certificate SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`; v2/v3 signatures verify. No replacement key was generated. The signing preflight still refuses absent or mismatched keys.
 
-**Desktop delivery and private-index writeback also failed.** The ordered upload batch reported a definite transfer failure for Windows, Linux, the manifest and Hollow_Workstation.md; no replacements finalized. Existing download identities and the private recovery index therefore remain at 0.68. The preserved source archive is also still the historical 0.68 fallback. This newer GitHub source and checkpoint take precedence over that stale index; do not overwrite them with the older archive.
+Android, Windows and Linux 0.69 packages are staged for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
 
-Validated game revision: 778d48d67ffd254c05bc2e4d6f35e3e94d7d011f (this subsequent checkpoint update changes documentation only). Unpublished 0.69 export SHA-256: Windows `5923ff89153cf90016e101ed80323c295612c5607005b62caa71f4c45c988b89`; Linux `c2cb4508cdd33927c2c13a73e41270b59f75d36fcb6c40ade6afc11c812b18ed`. Both archives include notices and their exact source revision. Packaged Linux launch passed. Source recovery verified all 55 tracked files and all 71 original native commits. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
+Validated game revision: 778d48d67ffd254c05bc2e4d6f35e3e94d7d011f; later commits update documentation only. Delivered 0.69 SHA-256: Android `0339782bd78eb8311ead16329ca3b0705186d1121f408e9665c975c1e0dd6fda`; Windows `7818a7d3294f47b990f5ed09a57627e45134d5e95d7d2d55135d08ad846f2e3a`; Linux `f03b6b884dd192ad0ba4d127b1044b38e07f0983126bd02ed53628df80020829`. Packages include notices; packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
 
-Next: retry recovery of the original signing key and deliver the Android update, then improve opening-expedition guidance and item-transfer readability before another campaign floor.
+Next: improve opening-expedition guidance and item-transfer readability before another campaign floor.
 
 ## Source continuity
 
