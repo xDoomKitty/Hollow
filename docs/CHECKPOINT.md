@@ -1,20 +1,20 @@
-# Hollow native checkpoint — 0.69.0
+# Hollow native checkpoint — 0.70.0
 
 Canonical source: https://github.com/xDoomKitty/Hollow. Read AGENTS.md, DIRECTION.md and ROADMAP.md before editing. Preserve the earlier browser Site separately.
 
-Completed: **Crew & Cargo** pauses for expedition planning. The scrollable roster shows each colonist's depth, condition, fatigue, task, pack weight and essential cargo. Find follows the actual colonist; Pack opens their independent inventory. Join depth uses saved physical travel through connected stairs; Rally by walks to the selected colonist on the same floor. Busy, queued, drafted, lost or incapacitated colonists are not redirected. Intermediate gates stop travel with an explanation.
+Completed: **Guided First Expedition** turns the opening into four concrete world-state-backed steps: tap the traveler, tap and search Shelter supplies, move exactly 4 timber plus 2 scrap into one colonist's pack, and build a Workbench. The objective advances only when those physical actions actually happen and adds no new saved fields.
 
-Cargo searches item or owner names, optionally including ordinary supplies and worn equipment. It reports exact physical quantities only from packs and searched, explored containers. Storage can be located on a remembered map; remote map taps cannot issue orders on another floor. Follow returns to the selected colonist. The owner's 0.68 drag scrolling and tap-to-interact controls remain. The campaign ends at Wayfarer Commons, depth 53.
+Inventory rows now state exact ownership and unit weight. Selecting a quantity previews the source and destination, both before/after counts, total moved weight, and resulting pack load. The action button names its destination. Goods remain physically owned until the colonist reaches the container. Crew & Cargo, drag scrolling, tap-to-approach interaction, persistent separate packs and the full campaign through Wayfarer Commons remain intact.
 
-Validation: 78 simulation groups / 2,069 assertions and 1,670 native headless input/layout assertions passed. Godot import, Windows/Linux exports and exported Linux headless launch passed. See VALIDATION.md for coverage. Graphical startup failed (no X11/Wayland/Xvfb), and adb reports no devices; no Android/Windows device execution is claimed.
+Validation: 79 simulation groups / 2,074 assertions and 1,674 native headless input/layout assertions passed. Godot import and Android/Windows/Linux exports passed after correcting the recovered Android SDK setting. See VALIDATION.md for coverage. Graphical startup remains unavailable (no X11/Wayland/Xvfb), and adb reports no devices; no Android/Windows device execution is claimed.
 
-**Android 0.69 is built and verified.** The original PRIVATE signing bundle transferred successfully on retry. Code 69 retains package `com.hollow.colony.prototype` and certificate SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`; v2/v3 signatures verify. No replacement key was generated. The signing preflight still refuses absent or mismatched keys.
+**Android 0.70 is built and verified.** Code 70 retains package `com.hollow.colony.prototype` and certificate SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`; v2/v3 signatures verify. No replacement key was generated. The signing preflight still refuses absent or mismatched keys.
 
-Android, Windows and Linux 0.69 packages are staged for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
+Android, Windows and Linux 0.70 packages are staged for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
 
-Validated game revision: 778d48d67ffd254c05bc2e4d6f35e3e94d7d011f; later commits update documentation only. Delivered 0.69 SHA-256: Android `0339782bd78eb8311ead16329ca3b0705186d1121f408e9665c975c1e0dd6fda`; Windows `fb6298fee27e16cd86086f9a02d42ca6116b8e5a0426a9bb01879a8518c3347d`; Linux `3244355843f46cd80b612f5fcd6fe22623c63cac261194300ff9163a8d7bae6a`. Packages include notices; packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
+Validated game revision: `be3db1c1161bc4baf6454e1a74d0ace8996f14bb`; later commits update release records only. Delivered 0.70 SHA-256: Android `75d0175065eb30751bd2c2806dd1149963258c1484d5929ac4bc5e90015fb0b6`; Windows `e56a623dba816b1782a4cdb72a030d0a2f78b2a9f36e0ca2a98c26cc594847e7`; Linux `a97102acedfea133037efa0cc20b6a31546dda166c2033e9825378041a0ff5ef`. Archives, notices, signing material exclusion and packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
 
-Next: improve opening-expedition guidance and item-transfer readability before another campaign floor.
+Next: extend the Underway road with a new exploration decision that uses the clearer physical-transfer controls.
 
 ## Source continuity
 
