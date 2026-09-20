@@ -4,7 +4,7 @@ A playable Godot prototype of an underground colony expedition. The title is pro
 
 Canonical native source: [xDoomKitty/Hollow](https://github.com/xDoomKitty/Hollow). The original 71-commit native history is preserved in a recovery bundle; attaching those commits to the branch graph is still pending (see `docs/GITHUB_IMPORT.md`). Start with `AGENTS.md`, `docs/DIRECTION.md`, `docs/ROADMAP.md` and `docs/CHECKPOINT.md` before development. Private Android signing material is stored separately.
 
-Windows and Linux exports were built for version 0.69. Android remains on the last-good 0.68 build until the preserved signing key can be retrieved; the transfer currently returns HTTP 502. No replacement certificate or differently signed Android update has been produced.
+Windows and Linux exports were built and verified for version 0.69, but publishing the download files failed. All existing download identities remain on the last-good 0.68 builds. Android export is separately blocked until the preserved signing key can be retrieved; that download returns HTTP 502. No replacement key or differently signed Android update has been produced. Current 0.69 source and tests are available in this repository.
 
 ## Play
 
