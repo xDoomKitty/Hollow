@@ -12,7 +12,7 @@ Validation: 78 simulation groups / 2,069 assertions and 1,670 native headless in
 
 Android, Windows and Linux 0.69 packages are staged for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
 
-Validated game revision: 778d48d67ffd254c05bc2e4d6f35e3e94d7d011f; later commits update documentation only. Delivered 0.69 SHA-256: Android `0339782bd78eb8311ead16329ca3b0705186d1121f408e9665c975c1e0dd6fda`; Windows `7818a7d3294f47b990f5ed09a57627e45134d5e95d7d2d55135d08ad846f2e3a`; Linux `f03b6b884dd192ad0ba4d127b1044b38e07f0983126bd02ed53628df80020829`. Packages include notices; packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
+Validated game revision: 778d48d67ffd254c05bc2e4d6f35e3e94d7d011f; later commits update documentation only. Delivered 0.69 SHA-256: Android `0339782bd78eb8311ead16329ca3b0705186d1121f408e9665c975c1e0dd6fda`; Windows `fb6298fee27e16cd86086f9a02d42ca6116b8e5a0426a9bb01879a8518c3347d`; Linux `3244355843f46cd80b612f5fcd6fe22623c63cac261194300ff9163a8d7bae6a`. Packages include notices; packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
 
 Next: improve opening-expedition guidance and item-transfer readability before another campaign floor.
 
@@ -30,7 +30,7 @@ Restore GitHub main, compare any surviving checkout and retain newer work. If di
 
 `python3 tools/bootstrap.py` restores Godot 4.5.1 and templates (~1.3 GB). `python3 tools/fetch_android_tools.py` restores Android SDK build-tools 35.0.1 and platform tools; Java 17 is required. Engine: `tools/Godot_v4.5.1-stable_linux.x86_64`; SDK: `tools/android-sdk`; Java: `/usr/lib/jvm/java-17-openjdk-amd64`. Configure the matching Godot editor paths without overwriting unrelated settings.
 
-Run `python3 tools/build.py --android` and `python3 tools/run_native_qa.py`. The Android build now validates the existing prototype key before export. Restore it only from PRIVATE Hollow_Test_Signing.zip to `/root/.local/share/godot/keystores/debug.keystore`. Development alias/password: `androiddebugkey` / `android`; private key bytes must never be published. Required certificate SHA-256: `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`. Verify the exported APK's signature and manifest before replacing the Android download.
+Run `python3 tools/build.py --android` and `python3 tools/run_native_qa.py`. The Android build validates the existing prototype key before export. Restore signing only through the private workstation continuity record; do not publish key paths, credentials or private key bytes. Required public certificate SHA-256: `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`. Verify the exported APK's signature and manifest before replacing the Android download.
 
 Commit before `python3 tools/package.py OUTPUT_DIRECTORY`. If Android is blocked, build desktops with `python3 tools/build.py` and package with `--skip-android`; its manifest explicitly excludes Android. Do not replace last-good downloads with missing or unverified exports. Packages retain notices, tracked source/tests/assets/generators and full recoverable history. `--visual` QA requires a working display.
 
