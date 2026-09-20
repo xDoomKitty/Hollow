@@ -1,0 +1,11 @@
+# Native 0.68 validation
+
+September 20, 2026. Godot 4.5.1 stable on the hosted Linux workstation.
+
+- Simulation: 77 groups, 2,040 assertions, zero failures. New coverage includes physical approach and delayed search, pause, cancellation, active and queued save recovery, original pack ownership and exact contents, single search rewards, missing targets, hidden/unreachable objects, choice preservation and atomic rejection of malformed order identities. Prior world generation, inventories, construction, recruitment, combat, travel and all campaign history remain covered.
+- Native scene/UI: 1,544 campaign assertions and 61 new input assertions (1,605 total), zero failures. Campaign scenarios set target selection directly and exercise all existing sidebar choices. The added input suite dispatches real viewport mouse and touchscreen events to test active/disabled row dragging, opposite directions, independent packs, tap jitter, canceled touches, duplicate Android mouse emulation, build/command/journal scrolling, map panning, arrival ownership, exact transfers, cancellation, traveler conversation, spring choices, bedroll rest and connected stairs. These are headless input/layout checks, not screenshot approval or physical touch-device testing.
+- Android version 0.68.0 / code 68 retains package `com.hollow.colony.prototype`, ARM64, minimum API 24, target API 35 and landscape OpenGL ES 3. APK signature schemes v2/v3 verify; the signing certificate remains SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`. Godot import and Android/Windows/Linux exports passed. The APK contains engine notices, has no Internet permission and passes ZIP integrity checks. Windows is PE32+ x86-64; exported Linux starts headlessly with embedded resources.
+
+Graphical QA was attempted: neither X11 nor Wayland could initialize, and Xvfb is unavailable. `adb devices -l` reported no attached devices. Actual Android and Windows execution, rendering, sound, touch comfort, installation/update behavior, performance and battery behavior remain unverified.
+
+No new art, audio or third-party dependency is required by this controls update. Original asset sources and engine notices remain packaged. This is a development-signed prototype, not a store release.
