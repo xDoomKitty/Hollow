@@ -4,7 +4,7 @@ extends RefCounted
 const W = 56
 const H = 38
 const SAVE_VERSION = 1
-const ITEMS = {"armor": {"name": "Reinforced coat", "weight": 2.5}, "timber": {"name": "Timber", "weight": 1.5}, "scrap": {"name": "Scrap", "weight": 1.0}, "rations": {"name": "Rations", "weight": 0.5}, "medkit": {"name": "Medkit", "weight": 0.5}, "crystal": {"name": "Glowstone", "weight": 0.7}, "filter": {"name": "Purifier cartridge", "weight": 1.5}, "coil": {"name": "Foundry regulator", "weight": 1.5}, "dossier": {"name": "Traveler dossier", "weight": 0.3}, "compass": {"name": "Survey compass", "weight": 0.8}, "tape": {"name": "Traveler signal tape", "weight": 0.2}, "seal": {"name": "Cistern gate seal", "weight": 1.2}, "docket": {"name": "Tidecourt water docket", "weight": 0.4}, "impeller": {"name": "Sump pump impeller", "weight": 1.4}, "drive": {"name": "Clockline traction drive", "weight": 6.5}, "brake": {"name": "Clockline brake drum", "weight": 6.5}, "warrant": {"name": "Railcourt switch warrant", "weight": 0.4}, "plate": {"name": "Cinder registry plate", "weight": 0.7}, "waybill": {"name": "Morrow freight waybill", "weight": 0.3}, "ledger": {"name": "Cairn witness ledger", "weight": 0.6}, "braid": {"name": "Farline route braid", "weight": 0.5}, "roster": {"name": "Thimble resident cord", "weight": 0.4}, "exchanger": {"name": "Latchwater heat exchanger", "weight": 2.0}, "prism": {"name": "Driftglass focusing prism", "weight": 1.6}, "charter": {"name": "Bellhome convoy charter", "weight": 0.5}, "brace": {"name": "Bellhome wall brace", "weight": 4.0}, "hearth_core": {"name": "Hearthline thermal core", "weight": 7.0}, "yard_winch": {"name": "Hearthline lift winch", "weight": 7.0}, "kiln_igniter": {"name": "Kilnreach ignition spindle", "weight": 2.0}, "junction_seal": {"name": "Embervault signal seal", "weight": 1.0}, "signal_breaker": {"name": "Embervault signal breaker", "weight": 3.0}, "relay_crown": {"name": "Deepcoil crown coil", "weight": 6.5}, "relay_root": {"name": "Deepcoil root coil", "weight": 6.5}, "ward_charter": {"name": "Coilward community charter", "weight": 0.8}, "delegate_writ": {"name": "Charterwell delegation writ", "weight": 0.4}, "assembly_mandate": {"name": "Writwell assembly mandate", "weight": 0.5}, "concordance_token": {"name": "Concordance response token", "weight": 0.6}, "quarter_pass": {"name": "Reservefall quarter pass", "weight": 0.5}, "quarter_shield": {"name": "Reservefall communal shield", "weight": 4.0}, "shield_frame": {"name": "Shieldline folding frame", "weight": 6.0}, "shield_axle": {"name": "Shieldline carriage axle", "weight": 6.0}, "march_wall": {"name": "Marchhold folded wall", "weight": 4.0}, "crossing_seal": {"name": "Marchhold crossing seal", "weight": 0.6}, "refuge_brace": {"name": "Marchhold refuge brace", "weight": 4.0}, "wallward_beacon": {"name": "Wallward convoy beacon", "weight": 3.0}, "convoy_tally": {"name": "Wallward convoy tally", "weight": 0.5}, "roadstead_jack": {"name": "Wayfarer roadstead jack", "weight": 6.0}}
+const ITEMS = {"armor": {"name": "Reinforced coat", "weight": 2.5}, "timber": {"name": "Timber", "weight": 1.5}, "scrap": {"name": "Scrap", "weight": 1.0}, "rations": {"name": "Rations", "weight": 0.5}, "medkit": {"name": "Medkit", "weight": 0.5}, "crystal": {"name": "Glowstone", "weight": 0.7}, "filter": {"name": "Purifier cartridge", "weight": 1.5}, "coil": {"name": "Foundry regulator", "weight": 1.5}, "dossier": {"name": "Traveler dossier", "weight": 0.3}, "compass": {"name": "Survey compass", "weight": 0.8}, "tape": {"name": "Traveler signal tape", "weight": 0.2}, "seal": {"name": "Cistern gate seal", "weight": 1.2}, "docket": {"name": "Tidecourt water docket", "weight": 0.4}, "impeller": {"name": "Sump pump impeller", "weight": 1.4}, "drive": {"name": "Clockline traction drive", "weight": 6.5}, "brake": {"name": "Clockline brake drum", "weight": 6.5}, "warrant": {"name": "Railcourt switch warrant", "weight": 0.4}, "plate": {"name": "Cinder registry plate", "weight": 0.7}, "waybill": {"name": "Morrow freight waybill", "weight": 0.3}, "ledger": {"name": "Cairn witness ledger", "weight": 0.6}, "braid": {"name": "Farline route braid", "weight": 0.5}, "roster": {"name": "Thimble resident cord", "weight": 0.4}, "exchanger": {"name": "Latchwater heat exchanger", "weight": 2.0}, "prism": {"name": "Driftglass focusing prism", "weight": 1.6}, "charter": {"name": "Bellhome convoy charter", "weight": 0.5}, "brace": {"name": "Bellhome wall brace", "weight": 4.0}, "hearth_core": {"name": "Hearthline thermal core", "weight": 7.0}, "yard_winch": {"name": "Hearthline lift winch", "weight": 7.0}, "kiln_igniter": {"name": "Kilnreach ignition spindle", "weight": 2.0}, "junction_seal": {"name": "Embervault signal seal", "weight": 1.0}, "signal_breaker": {"name": "Embervault signal breaker", "weight": 3.0}, "relay_crown": {"name": "Deepcoil crown coil", "weight": 6.5}, "relay_root": {"name": "Deepcoil root coil", "weight": 6.5}, "ward_charter": {"name": "Coilward community charter", "weight": 0.8}, "delegate_writ": {"name": "Charterwell delegation writ", "weight": 0.4}, "assembly_mandate": {"name": "Writwell assembly mandate", "weight": 0.5}, "concordance_token": {"name": "Concordance response token", "weight": 0.6}, "quarter_pass": {"name": "Reservefall quarter pass", "weight": 0.5}, "quarter_shield": {"name": "Reservefall communal shield", "weight": 4.0}, "shield_frame": {"name": "Shieldline folding frame", "weight": 6.0}, "shield_axle": {"name": "Shieldline carriage axle", "weight": 6.0}, "march_wall": {"name": "Marchhold folded wall", "weight": 4.0}, "crossing_seal": {"name": "Marchhold crossing seal", "weight": 0.6}, "refuge_brace": {"name": "Marchhold refuge brace", "weight": 4.0}, "wallward_beacon": {"name": "Wallward convoy beacon", "weight": 3.0}, "convoy_tally": {"name": "Wallward convoy tally", "weight": 0.5}, "roadstead_jack": {"name": "Wayfarer roadstead jack", "weight": 6.0}, "survey_kit": {"name": "Underway survey kit", "weight": 2.0}, "route_token": {"name": "Underway route token", "weight": 0.4}}
 const RECIPES = {"lamp": {"name": "Camp lantern", "cost": {"timber": 2, "scrap": 1}, "time": 3.0}, "stockpile": {"name": "Supply chest", "cost": {"timber": 2}, "time": 3.0}, "bench": {"name": "Workbench", "cost": {"timber": 4, "scrap": 2}, "time": 5.0}, "bed": {"name": "Bedroll", "cost": {"timber": 2, "rations": 1}, "time": 3.0}, "barricade": {"name": "Barricade", "cost": {"timber": 2, "scrap": 1}, "time": 3.0}, "shieldwall": {"name": "Folding shieldwall", "cost": {"timber": 1, "scrap": 2}, "time": 3.5}, "tripwire": {"name": "Tripwire alarm", "cost": {"timber": 1, "scrap": 2}, "time": 3.0}, "decoy": {"name": "Clatter beacon", "cost": {"timber": 1, "scrap": 3}, "time": 4.0}, "relay": {"name": "Signal relay", "cost": {"scrap": 4, "crystal": 2}, "time": 6.0}}
 const DISMANTLE_RETURNS = {"lamp":{"timber":1,"scrap":1},"stockpile":{"timber":1},"bench":{"timber":2,"scrap":1},"bed":{"timber":1},"barricade":{"timber":1,"scrap":1},"shieldwall":{"timber":1,"scrap":1},"tripwire":{"timber":1,"scrap":1},"decoy":{"timber":1,"scrap":1},"relay":{"scrap":2,"crystal":1}}
 const WORK_LEVELS = ["OFF","NORMAL","HIGH"]
@@ -30,6 +30,7 @@ func _init(world_seed: int = 704219):
 	data = {"version": SAVE_VERSION, "seed": world_seed, "seconds": 0.0, "floors": {}, "pawns": [], "next_id": 1, "traveler": false, "rumor": false, "signal": false, "station_met":false, "recruit_joined":false, "outpost_choice":"", "bellwether_choice":"", "spindle_contact":"", "ashline_state":"", "service_choice":"", "foundry_state":"", "archive_choice":"", "wake_state":"", "quiet_state":"", "stillworks_choice":"", "cistern_state":"", "drowned_state":"", "drowned_timer":0.0, "tidecourt_state":"", "sump_state":"", "market_state":"", "market_recruit_joined":false, "depot_state":"", "refuge_state":"", "ashrail_state":"", "customs_state":"", "railcourt_state":"", "registry_state":"", "morrow_state":"", "morrow_timer":0.0, "terminus_state":"", "farline_state":"", "thimble_state":"", "thimble_timer":0.0, "latchwater_state":"", "driftglass_state":"", "bellhome_state":"", "bellhome_timer":0.0, "commons_state":"", "yard_state":"", "yard_recruit_joined":false, "kiln_state":"", "junction_state":"", "junction_timer":0.0, "ember_commons_state":"", "deepcoil_state":"", "coilward_state":"", "charterwell_state":"", "charterwell_timer":0.0, "writwell_state":"", "concordance_state":"", "reservefall_state":"", "reservefall_timer":0.0, "reserve_commons_state":"", "shieldline_state":"", "shieldline_recruit_joined":false, "marchhold_state":"", "marchhold_timer":0.0, "march_refuge_state":"", "wallward_state":"", "wallward_timer":0.0, "paused": true, "log": [], "deepest": 0, "built_total": 0, "kills": 0}
 	ensure_floor(0)
 	data.wayfarer_state=""
+	data.underway_state=""
 	data.pawns = [make_pawn("Ash", 6, 6, "amber"), make_pawn("Iona", 7, 6, "teal")]
 	note("The surface drove you below. A stranger is waiting by the old shelter.")
 	reveal_all()
@@ -103,6 +104,7 @@ func theme_for(z: int) -> String:
 	if z==50:return "Marchhold Refuge"
 	if z==51:return "Wallward Descent"
 	if z==52:return "Wayfarer Commons"
+	if z==53:return "Underway Fork"
 	return ["Buried shelter", "Transit ruins", "Old mines", "Limestone caverns", "Sunken quarter"][z % 5]
 
 func carve(grid: Array, p: Vector2i):
@@ -698,6 +700,14 @@ func _wayfarer_rooms()->Array:
 func _connect_wayfarer(grid:Array,rooms:Array):
 	for link in [[0,1],[1,2]]:corridor(grid,rooms[link[0]].get_center(),rooms[link[1]].get_center(),1)
 
+func _underway_rooms()->Array:
+	# A buried road fork with a survey post, route-shaped approach, physical
+	# survey cache, bright and concealed branches, and a deeper road.
+	return [Rect2i(3,4,10,8),Rect2i(16,3,11,9),Rect2i(30,3,11,9),Rect2i(44,4,9,8),Rect2i(43,16,10,9),Rect2i(27,16,12,9),Rect2i(4,16,16,9),Rect2i(4,29,16,7),Rect2i(27,29,12,7),Rect2i(44,29,9,7)]
+
+func _connect_underway(grid:Array,rooms:Array):
+	for link in [[0,1],[1,2]]:corridor(grid,rooms[link[0]].get_center(),rooms[link[1]].get_center(),1)
+
 func _room_from_data(room:Array)->Rect2i:
 	return Rect2i(int(room[0]),int(room[1]),int(room[2]),int(room[3]))
 
@@ -727,14 +737,14 @@ func ensure_floor(z: int):
 		row.resize(W)
 		row.fill(0)
 		grid.append(row)
-	var rooms = _outpost_rooms() if z==5 else _bellwether_rooms() if z==7 else _spindle_rooms() if z==9 else _ashline_rooms() if z==11 else _service_rooms() if z==12 else _foundry_rooms() if z==13 else _archive_rooms() if z==14 else _wake_rooms() if z==15 else _quiet_rooms() if z==16 else _stillworks_rooms() if z==17 else _cistern_rooms() if z==18 else _drowned_rooms() if z==19 else _tidecourt_rooms() if z==20 else _sump_rooms() if z==21 else _market_rooms() if z==22 else _depot_rooms() if z==23 else _refuge_rooms() if z==24 else _ashrail_rooms() if z==25 else _customs_rooms() if z==26 else _railcourt_rooms() if z==27 else _registry_rooms() if z==28 else _morrow_rooms() if z==29 else _terminus_rooms() if z==30 else _farline_rooms() if z==31 else _thimble_rooms() if z==32 else _latchwater_rooms() if z==33 else _driftglass_rooms() if z==34 else _bellhome_rooms() if z==35 else _commons_rooms() if z==36 else _yard_rooms() if z==37 else _kiln_rooms() if z==38 else _junction_rooms() if z==39 else _ember_commons_rooms() if z==40 else _deepcoil_rooms() if z==41 else _coilward_rooms() if z==42 else _charterwell_rooms() if z==43 else _writwell_rooms() if z==44 else _concordance_rooms() if z==45 else _reservefall_rooms() if z==46 else _reserve_commons_rooms() if z==47 else _shieldline_rooms() if z==48 else _marchhold_rooms() if z==49 else _march_refuge_rooms() if z==50 else _wallward_rooms() if z==51 else _wayfarer_rooms() if z==52 else _transit_rooms() if z % 5 == 1 else _mine_rooms() if z % 5 == 2 else _cavern_rooms(rng) if z%5==3 else _sunken_rooms() if z%5==4 else [Rect2i(3, 3, 12, 11)]
-	if z not in [5,7,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52] and not z % 5 in [1,2,3,4]:
+	var rooms = _outpost_rooms() if z==5 else _bellwether_rooms() if z==7 else _spindle_rooms() if z==9 else _ashline_rooms() if z==11 else _service_rooms() if z==12 else _foundry_rooms() if z==13 else _archive_rooms() if z==14 else _wake_rooms() if z==15 else _quiet_rooms() if z==16 else _stillworks_rooms() if z==17 else _cistern_rooms() if z==18 else _drowned_rooms() if z==19 else _tidecourt_rooms() if z==20 else _sump_rooms() if z==21 else _market_rooms() if z==22 else _depot_rooms() if z==23 else _refuge_rooms() if z==24 else _ashrail_rooms() if z==25 else _customs_rooms() if z==26 else _railcourt_rooms() if z==27 else _registry_rooms() if z==28 else _morrow_rooms() if z==29 else _terminus_rooms() if z==30 else _farline_rooms() if z==31 else _thimble_rooms() if z==32 else _latchwater_rooms() if z==33 else _driftglass_rooms() if z==34 else _bellhome_rooms() if z==35 else _commons_rooms() if z==36 else _yard_rooms() if z==37 else _kiln_rooms() if z==38 else _junction_rooms() if z==39 else _ember_commons_rooms() if z==40 else _deepcoil_rooms() if z==41 else _coilward_rooms() if z==42 else _charterwell_rooms() if z==43 else _writwell_rooms() if z==44 else _concordance_rooms() if z==45 else _reservefall_rooms() if z==46 else _reserve_commons_rooms() if z==47 else _shieldline_rooms() if z==48 else _marchhold_rooms() if z==49 else _march_refuge_rooms() if z==50 else _wallward_rooms() if z==51 else _wayfarer_rooms() if z==52 else _underway_rooms() if z==53 else _transit_rooms() if z % 5 == 1 else _mine_rooms() if z % 5 == 2 else _cavern_rooms(rng) if z%5==3 else _sunken_rooms() if z%5==4 else [Rect2i(3, 3, 12, 11)]
+	if z not in [5,7,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53] and not z % 5 in [1,2,3,4]:
 		for i in 15:
 			var rect = Rect2i(rng.randi_range(3, W - 13), rng.randi_range(3, H - 11), rng.randi_range(5, 10), rng.randi_range(5, 8))
 			rooms.append(rect)
 	for room in rooms:
-		if (z%5==4 and z not in [9,14,19,24,29,34,39,44,49] and room in [rooms[7],rooms[8]]) or (z==7 and room in [rooms[8],rooms[9]]) or (z==9 and room in [rooms[7],rooms[8],rooms[9]]) or (z==11 and room in [rooms[6],rooms[9]]) or (z==12 and room in [rooms[6],rooms[8],rooms[9]]) or (z==13 and room in [rooms[6],rooms[8],rooms[9]]) or (z==14 and room in [rooms[6],rooms[8],rooms[9]]) or (z==15 and room in [rooms[6],rooms[8],rooms[9]]) or (z==16 and room in [rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]) or (z==17 and room in [rooms[3],rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]) or (z in [18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52] and room in [rooms[3],rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]):continue
-		if z%5==3 and z not in [13,18,23,28,33,43]:_carve_cavern(grid,room)
+		if (z%5==4 and z not in [9,14,19,24,29,34,39,44,49] and room in [rooms[7],rooms[8]]) or (z==7 and room in [rooms[8],rooms[9]]) or (z==9 and room in [rooms[7],rooms[8],rooms[9]]) or (z==11 and room in [rooms[6],rooms[9]]) or (z==12 and room in [rooms[6],rooms[8],rooms[9]]) or (z==13 and room in [rooms[6],rooms[8],rooms[9]]) or (z==14 and room in [rooms[6],rooms[8],rooms[9]]) or (z==15 and room in [rooms[6],rooms[8],rooms[9]]) or (z==16 and room in [rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]) or (z==17 and room in [rooms[3],rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]) or (z in [18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53] and room in [rooms[3],rooms[4],rooms[5],rooms[6],rooms[7],rooms[8],rooms[9]]):continue
+		if z%5==3 and z not in [13,18,23,28,33,43,53]:_carve_cavern(grid,room)
 		else:
 			for y in range(room.position.y, room.end.y):
 				for x in range(room.position.x, room.end.x): carve(grid, Vector2i(x, y))
@@ -783,6 +793,7 @@ func ensure_floor(z: int):
 	elif z==50:_connect_march_refuge(grid,rooms)
 	elif z==51:_connect_wallward(grid,rooms)
 	elif z==52:_connect_wayfarer(grid,rooms)
+	elif z==53:_connect_underway(grid,rooms)
 	elif z % 5 == 1: _connect_transit(grid,rooms)
 	elif z % 5 == 2: _connect_mines(grid,rooms)
 	elif z%5==3:_connect_caverns(grid,rooms,rng)
@@ -790,20 +801,20 @@ func ensure_floor(z: int):
 	else:
 		for i in range(1, rooms.size()):
 			corridor(grid, rooms[i-1].get_center(), rooms[i].get_center(), 1 if z % 5 in [0,4] else 0)
-	if z % 5 == 3 and z not in [13,18,23,28,33,43]:
+	if z % 5 == 3 and z not in [13,18,23,28,33,43,53]:
 		var p = Vector2i(10, 9)
 		for i in 1600:
 			p += DIRS[rng.randi_range(0, 3)]
 			p = p.clamp(Vector2i(3,3), Vector2i(W-4,H-4))
 			for dx in range(-1,2):
 				for dy in range(-1,2): carve(grid, p + Vector2i(dx,dy))
-	var entry = rooms[5].get_center() if z==9 and data.bellwether_choice=="maintenance" else rooms[0].get_center() if z in [9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52] else Vector2i(6,6)
-	var down = rooms[1].get_center() if z in [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52] else rooms[4].get_center() if z in [9,11,12,13,14,15] else rooms[7].get_center() if z==7 else rooms[9].get_center() if z%5==4 or z==5 else entry
-	if z%5!=4 and z not in [5,7,9,11,12,13,14,15,16,17,18,20,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,50,51,52]:
+	var entry = rooms[5].get_center() if z==9 and data.bellwether_choice=="maintenance" else rooms[0].get_center() if z in [9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53] else Vector2i(6,6)
+	var down = rooms[1].get_center() if z in [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53] else rooms[4].get_center() if z in [9,11,12,13,14,15] else rooms[7].get_center() if z==7 else rooms[9].get_center() if z%5==4 or z==5 else entry
+	if z%5!=4 and z not in [5,7,9,11,12,13,14,15,16,17,18,20,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,50,51,52,53]:
 		for room in rooms:
 			var center = room.get_center()
 			if center.distance_squared_to(entry) > down.distance_squared_to(entry): down = center
-	if down.distance_to(entry) < 25 and z not in [9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,50,51,52]:
+	if down.distance_to(entry) < 25 and z not in [9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,50,51,52,53]:
 		down = Vector2i(47, 29)
 		corridor(grid, entry, down)
 	var f = {"z": z, "name": theme_for(z), "grid": grid, "up": arr(entry), "down": arr(down), "seen": {}, "containers": [], "structures": [], "enemies": [], "heat": 0.0, "alarm": -1.0, "waves": 0, "rooms": [], "landmarks": []}
@@ -811,7 +822,7 @@ func ensure_floor(z: int):
 	for room in rooms: f.rooms.append([room.position.x, room.position.y, room.size.x, room.size.y])
 	var occupied = {cell_key(entry): true, cell_key(down): true}
 	for i in range(rooms.size()):
-		if (z%5==4 and z not in [9,14,19,24,29,34,39,44] and i in [7,8]) or (z==7 and i in [8,9]) or (z==9 and i in [7,8,9]) or (z==11 and i in [6,9]) or (z==12 and i in [6,8,9]) or (z==13 and i in [6,8,9]) or (z==14 and i in [6,8,9]) or (z==15 and i in [6,8,9]) or (z==16 and i in [4,5,6,7,8,9]) or (z==17 and i in [3,4,5,6,7,8,9]) or (z in [18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52] and i in [3,4,5,6,7,8,9]):continue
+		if (z%5==4 and z not in [9,14,19,24,29,34,39,44] and i in [7,8]) or (z==7 and i in [8,9]) or (z==9 and i in [7,8,9]) or (z==11 and i in [6,9]) or (z==12 and i in [6,8,9]) or (z==13 and i in [6,8,9]) or (z==14 and i in [6,8,9]) or (z==15 and i in [6,8,9]) or (z==16 and i in [4,5,6,7,8,9]) or (z==17 and i in [3,4,5,6,7,8,9]) or (z in [18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53] and i in [3,4,5,6,7,8,9]):continue
 		var p = rooms[i].get_center() + Vector2i(1,0)
 		if occupied.has(cell_key(p)): continue
 		occupied[cell_key(p)] = true
@@ -862,6 +873,7 @@ func ensure_floor(z: int):
 		elif z==50:container_name=["Refuge locker","Brace cabinet","Resident basket","Marchhold stores"][i%4]
 		elif z==51:container_name=["Descent locker","Beacon cabinet","Convoy basket","Wallward stores"][i%4]
 		elif z==52:container_name=["Roadstead locker","Convoy trunk","Resident basket","Wayfarer stores"][i%4]
+		elif z==53:container_name=["Survey locker","Waymark cabinet","Road basket","Underway cache"][i%4]
 		elif z % 5 == 2:
 			container_name=["Foreman's lockbox","Tool cage","Ore cart","Blasting locker"][i%4]
 			if i in [2,6,7]:loot.scrap=int(loot.scrap)+3;loot.crystal=int(loot.crystal)+2
@@ -884,7 +896,7 @@ func ensure_floor(z: int):
 		f.landmarks.append({"x":34,"y":5,"name":"Split roof beam","kind":"unstable_roof","description":"The roof beam is splitting. Crossing nearby will start a cave-in.","state":"armed","timer":0.0})
 		f.landmarks.append({"x":20,"y":27,"name":"Shifting shale","kind":"unstable_roof","description":"Loose shale clicks under pressure. Keep a retreat route open.","state":"armed","timer":0.0})
 		f.landmarks.append({"x":36,"y":33,"name":"Sagging supports","kind":"unstable_roof","description":"Old pit props bow beneath the stone. The valuable seam beyond was abandoned in a hurry.","state":"armed","timer":0.0})
-	if z%5==3 and z not in [13,18,23,28,33,43]:
+	if z%5==3 and z not in [13,18,23,28,33,43,53]:
 		var spring=rooms[4].get_center();var fossil=rooms[2].get_center();var roots=rooms[6].get_center()
 		f.landmarks.append({"x":spring.x,"y":spring.y,"name":"Luminous spring","kind":"spring","description":"Mineral water glows beneath a skin of crystal. It may heal one colonist, or be drained for glowstone.","state":"untouched"})
 		f.landmarks.append({"x":fossil.x,"y":fossil.y,"name":"Spiral fossil wall","kind":"fossil","description":"Vast spiral shells fill the limestone. Whatever sea formed this place vanished before the first tunnel was dug."})
@@ -945,7 +957,8 @@ func ensure_floor(z: int):
 	if z==50:_add_march_refuge(f,"",data.marchhold_state)
 	if z==51:_add_wallward(f,"",data.march_refuge_state)
 	if z==52:_add_wayfarer(f,"",data.wallward_state)
-	if z >= 2 and z not in [5,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52]:
+	if z==53:_add_underway(f,"",data.wayfarer_state)
+	if z >= 2 and z not in [5,9,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53]:
 		var enemy_rooms=[7,6,5,4,3] if z==7 else [9,6,5,2] if z%5==4 else range(rooms.size()-1,-1,-1)
 		for i in range(min(2 + z / 2, 5)):
 			var p = rooms[int(enemy_rooms[i])].get_center()
@@ -4494,6 +4507,98 @@ func wayfarer_landmark()->Dictionary:
 		if mark.get("kind","")=="wayfarer":return mark
 	return {}
 
+func _underway_center(f:Dictionary,index:int)->Vector2i:
+	var room=f.rooms[index]
+	return Vector2i(int(room[0])+int(room[2])/2,int(room[1])+int(room[3])/2)
+
+func _underway_route(history:String="current")->String:
+	var source=data.wayfarer_state if history=="current" else history
+	return source if source in ["resident","hidden","public"] else "public"
+
+func underway_cost(choice:String)->Dictionary:
+	return {"survey_kit":1,"scrap":3,"crystal":2} if choice=="lit" else {"survey_kit":1,"timber":2,"rations":3}
+
+func _add_underway(f:Dictionary,state:String,history:String=""):
+	f.landmarks=f.landmarks.filter(func(mark):return not str(mark.get("kind","")).begins_with("underway"))
+	var route=_underway_route(history);var resolved=state in ["lit","hidden"]
+	var approach_room=4 if route=="resident" else 6 if route=="hidden" else 5
+	f.landmarks.append_array([
+		{"x":_underway_center(f,1).x,"y":_underway_center(f,1).y,"name":"Underway survey post","kind":"underway","state":state if state!="" else "waiting","route":route,"description":"Wayfarer's carried tally opens a route-shaped survey into the buried road fork."},
+		{"x":_underway_center(f,approach_room).x,"y":_underway_center(f,approach_room).y,"name":"Resident guideway" if route=="resident" else "Concealed cartway" if route=="hidden" else "Public rubble road","kind":"underway_route","state":"complete" if resolved else "open" if state=="assigned" else "sealed","route":route,"description":"Wayfarer's roadstead history determines the light and threats on this approach."},
+		{"x":_underway_center(f,approach_room).x+1,"y":_underway_center(f,approach_room).y,"name":"Survey kit case","kind":"underway_cache","state":"installed" if resolved else "open" if state=="assigned" else "sealed","description":"Recover the physical 2 kg survey kit before choosing a road."},
+		{"x":_underway_center(f,4).x,"y":_underway_center(f,4).y,"name":"Waylight bridge","kind":"underway_light","state":"complete" if state=="lit" else "sealed" if resolved else "available" if state=="assigned" else "sealed","description":"Install the kit with 3 scrap and 2 glowstone. The lit road grants recovery and supplies, but its heat draws two warned surface husks."},
+		{"x":_underway_center(f,6).x,"y":_underway_center(f,6).y,"name":"Shrouded bypass","kind":"underway_hide","state":"complete" if state=="hidden" else "sealed" if resolved else "available" if state=="assigned" else "sealed","description":"Install the kit with 2 timber and 3 rations. The dark road grants pressure shelter and avoids a new incursion."},
+		{"x":_underway_center(f,9).x,"y":_underway_center(f,9).y,"name":"Deeper Underway","kind":"underway_exit","state":"open" if resolved else "sealed","description":"The surveyed road continues toward the lower works."}
+	])
+
+func _open_underway(f:Dictionary):
+	var route=_underway_route();var lane=4 if route=="resident" else 6 if route=="hidden" else 5
+	# The inherited route determines the approach, but both visible survey choices
+	# must be physically reachable once that approach has been cleared.
+	for link in [[2,lane],[lane,4],[lane,6]]:
+		_carve_wayfarer_room(f,link[1]);corridor(f.grid,_underway_center(f,link[0]),_underway_center(f,link[1]),1)
+	if not f.enemies.any(func(enemy):return enemy.has("underway_guard")):
+		var names=["Burrower"] if route=="resident" else ["Gloam stalker"] if route=="hidden" else ["Surface husk","Surface husk"]
+		for i in names.size():
+			var place=_underway_center(f,lane)+Vector2i(i-1,1)
+			var enemy_name=str(names[i])
+			f.enemies.append({"id":next_id(),"x":place.x,"y":place.y,"name":enemy_name,"hp":48.0 if enemy_name=="Burrower" else 34.0 if enemy_name=="Gloam stalker" else 42.0,"clock":0.0,"attack":0.0,"underway_guard":true})
+	if route=="resident" and not f.structures.any(func(structure):return bool(structure.get("underway_approach_lamp",false))):
+		var lamp=make_structure("lamp",_underway_center(f,lane)+Vector2i(-2,0));lamp.underway_approach_lamp=true;f.structures.append(lamp)
+	if not f.containers.any(func(container):return container.get("name","")=="Underway survey case"):
+		var target=_underway_center(f,lane)+Vector2i(1,0)
+		f.containers.append({"id":next_id(),"x":target.x,"y":target.y,"name":"Underway survey case","searched":false,"items":{"survey_kit":1},"kind":"salvage"})
+	data.underway_state="assigned";_add_underway(f,"assigned",data.wayfarer_state);navigation_cache.erase(str(int(f.z)))
+
+func underway_error(index:int,choice:String)->String:
+	if index<0 or index>=data.pawns.size() or not data.floors.has("53"):return "Select a colonist at Underway Fork."
+	if not choice in ["lit","hidden"] or data.underway_state!="assigned":return "The Underway fork is not waiting for a route decision."
+	var pawn=data.pawns[index]
+	if int(pawn.z)!=53:return "Bring the selected colonist to Underway Fork."
+	if int(pawn.inventory.get("convoy_tally",0))<1:return "Keep Wayfarer's physical convoy tally with the surveyor."
+	if floor_at(53).enemies.any(func(enemy):return enemy.hp>0 and enemy.has("underway_guard")):return "Clear the Underway approach before setting the survey kit."
+	var cost=underway_cost(choice)
+	for item in cost:
+		if int(pawn.inventory.get(item,0))<int(cost[item]):
+			return "Carry the 2 kg survey kit with "+("3 scrap and 2 glowstone." if choice=="lit" else "2 timber and 3 rations.")
+	return ""
+
+func _complete_underway(f:Dictionary,index:int,choice:String):
+	var pawn=data.pawns[index];var cost=underway_cost(choice)
+	for item in cost:pawn.inventory[item]=int(pawn.inventory.get(item,0))-int(cost[item])
+	pawn.inventory.route_token=int(pawn.inventory.get("route_token",0))+1
+	for link in ([[2,4],[4,5],[5,9]] if choice=="lit" else [[2,6],[6,7],[7,9]]):
+		_carve_wayfarer_room(f,link[1]);corridor(f.grid,_underway_center(f,link[0]),_underway_center(f,link[1]),1)
+	f.down=arr(_underway_center(f,9))
+	var issue=_underway_center(f,8 if choice=="lit" else 7)+Vector2i(1,0)
+	var items={"rations":4,"medkit":2,"scrap":2} if choice=="lit" else {"scrap":4,"crystal":2,"rations":2}
+	f.containers.append({"id":next_id(),"x":issue.x,"y":issue.y,"name":"Underway waylight issue" if choice=="lit" else "Underway concealed stores","searched":true,"items":items,"kind":"ground"})
+	if choice=="lit":
+		f.heat=float(f.heat)+8.0
+		for room_index in [4,5,9]:
+			var lamp=make_structure("lamp",_underway_center(f,room_index)+Vector2i(-2,0));lamp.underway_waylight=true;f.structures.append(lamp)
+		for i in 2:
+			var place=_underway_center(f,7)+Vector2i(i,0)
+			f.enemies.append({"id":next_id(),"x":place.x,"y":place.y,"name":"Surface husk","hp":42.0,"clock":0.0,"attack":0.0,"underway_follow":true})
+		pawn.hp=min(100.0,float(pawn.hp)+18.0);pawn.fatigue=max(0.0,float(pawn.fatigue)-18.0)
+	data.underway_state=choice;_add_underway(f,choice,data.wayfarer_state);navigation_cache.erase(str(int(f.z)))
+	_remember_nearby(index,"discovery","Surveyed the Underway road with {other}.",8.0,7)
+
+func underway_landmark()->Dictionary:
+	if not data.floors.has("53"):return {}
+	for mark in floor_at(53).landmarks:
+		if mark.get("kind","")=="underway":return mark
+	return {}
+
+func order_underway(index:int,action:String,queued:bool=false)->String:
+	var mark=underway_landmark() if action=="start" else {}
+	if action!="start" and data.floors.has("53"):
+		var expected="underway_light" if action=="lit" else "underway_hide"
+		for candidate in floor_at(53).landmarks:
+			if candidate.get("kind","")==expected:mark=candidate;break
+	if mark.is_empty():return "Underway Fork is not reachable."
+	return enqueue_order(index,"underway",point(mark),{"action":action}) if queued else issue(index,"underway",point(mark),{"action":action})
+
 func order_wayfarer(index:int,action:String,queued:bool=false)->String:
 	var mark=wayfarer_landmark()
 	if mark.is_empty():return "Wayfarer Commons is not reachable."
@@ -4660,7 +4765,7 @@ func issue(index: int, kind: String, target: Vector2i, extra: Dictionary = {}) -
 	var z = int(p.z)
 	if not valid(target): return "Outside the explored region."
 	if not floor_at(z).seen.has(cell_key(target)) and not kind in ["travel","retreat"]: return "Explore closer to reveal that area."
-	var near = kind in ["search", "transfer", "talk", "recruit", "outpost", "bellwether", "spindle", "ashline", "service", "foundry", "archive", "wake", "quiet", "stillworks", "cistern", "drowned", "tidecourt", "sump", "market", "depot", "refuge", "ashrail", "customs", "railcourt", "registry", "morrow", "terminus", "farline", "thimble", "latchwater", "driftglass", "bellhome", "commons", "yard", "kiln", "junction", "ember_commons", "deepcoil", "coilward", "charterwell", "writwell", "concordance", "reservefall", "reserve_commons", "shieldline", "marchhold", "march_refuge", "wallward","wayfarer", "build", "construct", "dismantle", "reset_alarm", "rest", "spring", "pump", "rescue", "tend"]
+	var near = kind in ["search", "transfer", "talk", "recruit", "outpost", "bellwether", "spindle", "ashline", "service", "foundry", "archive", "wake", "quiet", "stillworks", "cistern", "drowned", "tidecourt", "sump", "market", "depot", "refuge", "ashrail", "customs", "railcourt", "registry", "morrow", "terminus", "farline", "thimble", "latchwater", "driftglass", "bellhome", "commons", "yard", "kiln", "junction", "ember_commons", "deepcoil", "coilward", "charterwell", "writwell", "concordance", "reservefall", "reserve_commons", "shieldline", "marchhold", "march_refuge", "wallward","wayfarer","underway", "build", "construct", "dismantle", "reset_alarm", "rest", "spring", "pump", "rescue", "tend"]
 	if kind=="rescue" and bool(extra.get("carrying",false)):near=false
 	if kind=="interact":near=true
 	var route = path_to(z, point(p), target, near)
@@ -5323,6 +5428,17 @@ func issue(index: int, kind: String, target: Vector2i, extra: Dictionary = {}) -
 		else:
 			var repair_error=wayfarer_repair_error(index)
 			if repair_error!="":return repair_error
+	if kind=="underway":
+		var action=str(extra.get("action",""));var mark:Dictionary={};var expected_kind="underway" if action=="start" else "underway_light" if action=="lit" else "underway_hide"
+		for candidate in floor_at(z).landmarks:
+			if candidate.get("kind","")==expected_kind and point(candidate)==target:mark=candidate;break
+		if z!=53 or mark.is_empty() or not action in ["start","lit","hidden"]:return "That Underway survey order is unavailable."
+		if action=="start":
+			if data.underway_state!="" or mark.get("state","")!="waiting" or not data.wayfarer_state in ["resident","hidden","public"]:return "Underway Fork is not ready for Wayfarer's survey."
+			if int(p.inventory.get("convoy_tally",0))<1:return "Carry Wayfarer's physical convoy tally to the survey post."
+		else:
+			var survey_error=underway_error(index,action)
+			if survey_error!="":return survey_error
 	if kind=="wallward":
 		var action=str(extra.get("action",""));var mark:Dictionary={};var expected_kind="wallward_rally" if action=="escort" else "wallward_screen" if action=="screen" else "wallward"
 		for candidate in floor_at(z).landmarks:
@@ -5340,7 +5456,7 @@ func issue(index: int, kind: String, target: Vector2i, extra: Dictionary = {}) -
 			else:
 				if wallward_gathered(true)<2:return "Rally at least two living colonists beside the screened bypass."
 				if int(p.inventory.get("timber",0))<2 or int(p.inventory.get("scrap",0))<2:return "Carry the beacon with exactly 2 timber and 2 scrap to screen the convoy."
-	var seconds = {"search": 2.8, "transfer": 0.65, "talk": 1.0, "recruit":1.0, "outpost":4.0, "bellwether":4.5, "spindle":4.0, "ashline":4.0, "service":8.0, "foundry":4.0, "archive":4.0, "quiet":5.5, "stillworks":6.0, "cistern":4.5, "drowned":4.0, "tidecourt":4.0, "sump":4.5, "market":6.0, "depot":5.0, "refuge":6.0, "ashrail":5.5, "customs":5.5, "railcourt":5.0, "registry":5.0, "morrow":4.5, "terminus":5.0, "farline":5.0, "thimble":4.5, "latchwater":5.0, "driftglass":5.5, "bellhome":5.0, "commons":6.0, "yard":6.5, "kiln":6.0, "junction":5.5, "ember_commons":6.0, "deepcoil":6.5, "coilward":6.0, "charterwell":5.5, "writwell":6.5, "concordance":6.5, "reservefall":5.5, "reserve_commons":6.0, "shieldline":6.5, "marchhold":5.5, "march_refuge":6.0, "wallward":5.5, "wayfarer":6.0, "spring":2.5, "pump":3.5, "travel": 0.7, "retreat":0.7, "walk": 0.0, "rest": 12.0, "rescue":1.0, "tend":5.0, "build": 4.0, "construct":4.0, "dismantle":3.5, "reset_alarm":2.0}.get(kind, 0.0)
+	var seconds = {"search": 2.8, "transfer": 0.65, "talk": 1.0, "recruit":1.0, "outpost":4.0, "bellwether":4.5, "spindle":4.0, "ashline":4.0, "service":8.0, "foundry":4.0, "archive":4.0, "quiet":5.5, "stillworks":6.0, "cistern":4.5, "drowned":4.0, "tidecourt":4.0, "sump":4.5, "market":6.0, "depot":5.0, "refuge":6.0, "ashrail":5.5, "customs":5.5, "railcourt":5.0, "registry":5.0, "morrow":4.5, "terminus":5.0, "farline":5.0, "thimble":4.5, "latchwater":5.0, "driftglass":5.5, "bellhome":5.0, "commons":6.0, "yard":6.5, "kiln":6.0, "junction":5.5, "ember_commons":6.0, "deepcoil":6.5, "coilward":6.0, "charterwell":5.5, "writwell":6.5, "concordance":6.5, "reservefall":5.5, "reserve_commons":6.0, "shieldline":6.5, "marchhold":5.5, "march_refuge":6.0, "wallward":5.5, "wayfarer":6.0, "underway":5.5, "spring":2.5, "pump":3.5, "travel": 0.7, "retreat":0.7, "walk": 0.0, "rest": 12.0, "rescue":1.0, "tend":5.0, "build": 4.0, "construct":4.0, "dismantle":3.5, "reset_alarm":2.0}.get(kind, 0.0)
 	if kind=="drowned" and str(extra.get("action",""))=="start":seconds=3.0
 	if kind=="service" and str(extra.get("choice",""))=="field":seconds=5.0
 	if kind=="foundry" and str(extra.get("action",""))=="contract":seconds=6.0
@@ -5659,6 +5775,7 @@ func fatigue_rate(index:int)->float:
 	if int(pawn.z)==50 and data.march_refuge_state in ["guarded","walled"] and pawn.job.is_empty() and _safe_for_colony_work(50):return -0.095
 	if int(pawn.z)==51 and data.wallward_state=="escorted" and pawn.job.is_empty() and _safe_for_colony_work(51):return -0.09
 	if int(pawn.z)==52 and data.wayfarer_state in ["resident","public"] and pawn.job.is_empty() and _safe_for_colony_work(52):return -0.1 if data.wayfarer_state=="resident" else -0.045
+	if int(pawn.z)==53 and data.underway_state=="lit" and pawn.job.is_empty() and _safe_for_colony_work(53):return -0.08
 	var rate=0.018
 	if not pawn.job.is_empty():rate+=0.026
 	var companion=companion_for(index)
@@ -5977,6 +6094,7 @@ func travel_error(index: int, destination: int) -> String:
 	if int(p.z)==50 and destination>int(p.z) and not data.march_refuge_state in ["guarded","sheltered","public","walled"]:return "Settle Marchhold Refuge's communal defense before using the deep resident road."
 	if int(p.z)==51 and destination>int(p.z) and not data.wallward_state in ["escorted","screened","missed"]:return "Resolve Wallward's warned convoy rendezvous before using the Wayfarer road."
 	if int(p.z)==52 and destination>int(p.z) and not data.wayfarer_state in ["resident","hidden","public"]:return "Repair Wayfarer's shared roadstead before using the Underway road."
+	if int(p.z)==53 and destination>int(p.z) and not data.underway_state in ["lit","hidden"]:return "Survey the lit bridge or concealed bypass before using the deeper Underway."
 	return ""
 
 func order_travel(index: int, destination: int, queued: bool = false) -> String:
@@ -7700,6 +7818,23 @@ func _finish(index: int):
 					_complete_wayfarer(floor_at(z),index,_wayfarer_delivery())
 					note("Two carriers set Wayfarer's jack and exact shared materials into the roadstead. The tally stays in its owner's pack, resident stores open, and the Underway road becomes connected.")
 					events.append({"kind":"wayfarer"})
+		"underway":
+			var action=str(extra.get("action",""))
+			if action=="start":
+				var speaker=underway_landmark()
+				var can_start=z==53 and not speaker.is_empty() and speaker.get("state","")=="waiting" and data.underway_state=="" and data.wayfarer_state in ["resident","hidden","public"] and int(p.inventory.get("convoy_tally",0))>=1
+				if not can_start:note("The Underway survey stopped. Keep the physical convoy tally with its bearer.")
+				else:
+					_open_underway(floor_at(z))
+					note("The survey post reads Wayfarer's tally. Clear the approach, recover the 2 kg survey kit, then choose the warned waylight bridge or concealed bypass.")
+					events.append({"kind":"underway"})
+			else:
+				var survey_error=underway_error(index,action)
+				if survey_error!="":note("Underway work stopped without consuming supplies. "+survey_error)
+				else:
+					_complete_underway(floor_at(z),index,action)
+					note(("The waylights burn and two warned surface husks enter the lower gallery." if action=="lit" else "The shrouded bypass opens without a new incursion.")+" The physical route token stays with its surveyor.")
+					events.append({"kind":"underway"})
 		"spring":
 			var spring={}
 			for mark in floor_at(z).landmarks:
@@ -7882,6 +8017,7 @@ func pressure_report(z:int)->Dictionary:
 	if z==51 and data.wallward_state=="missed":report.rate=-0.025+(float(report.rate)+0.025)*0.72
 	if z==52 and data.wayfarer_state=="hidden":report.rate=-0.025+(float(report.rate)+0.025)*0.16
 	if z==52 and data.wayfarer_state=="public":report.rate=-0.025+(float(report.rate)+0.025)*0.62
+	if z==53 and data.underway_state=="hidden":report.rate=-0.025+(float(report.rate)+0.025)*0.14
 	return report
 
 func active_decoy(z:int,listener:Vector2i=Vector2i(-100,-100))->Dictionary:
@@ -8175,6 +8311,10 @@ func tick(dt: float):
 		note("The expedition is lost. Start a new seed when you are ready.")
 
 func objective() -> String:
+	if data.underway_state=="lit":return "Underway's waylights are installed. The route token remains carried; clear the two warned husks or follow the deeper road."
+	if data.underway_state=="hidden":return "Underway's shrouded bypass shelters pressure. The route token remains carried; haul the concealed stores or continue below."
+	if data.underway_state=="assigned":return "Clear Underway's approach, recover the 2 kg survey kit, then choose the warned lit bridge or concealed bypass with exact supplies."
+	if data.wayfarer_state in ["resident","hidden","public"] and int(data.deepest)>=53:return "At Underway Fork, present Wayfarer's physical convoy tally to the survey post."
 	if data.wayfarer_state in ["resident","hidden","public"]:return "Wayfarer's shared roadstead is repaired. The convoy tally remains carried; haul the resident stores or follow the Underway road."
 	if data.wayfarer_state=="assigned":return "Clear Wayfarer's reception road. Gather two fit colonists with the convoy tally, 6 kg jack and exact supplies at the shared repair court."
 	if data.wallward_state in ["escorted","screened","missed"] and int(data.deepest)>=52:return "At Wayfarer Commons, present the physical convoy tally to Roadkeeper Senn."
@@ -8502,7 +8642,7 @@ func _position_valid(object) -> bool:
 
 func _order_valid(order, floors: Dictionary) -> bool:
 	if not order is Dictionary or not order.get("kind",null) is String: return false
-	if not order.kind in ["interact","walk","search","transfer","build","construct","dismantle","reset_alarm","talk","recruit","outpost","bellwether","spindle","ashline","service","foundry","archive","wake","quiet","stillworks","cistern","drowned","tidecourt","sump","market","depot","refuge","ashrail","customs","railcourt","registry","morrow","terminus","farline","thimble","latchwater","driftglass","bellhome","commons","yard","kiln","junction","ember_commons","deepcoil","coilward","charterwell","writwell","concordance","reservefall","reserve_commons","shieldline","marchhold","march_refuge","wallward","wayfarer","spring","pump","travel","retreat","rest","rescue","tend"]: return false
+	if not order.kind in ["interact","walk","search","transfer","build","construct","dismantle","reset_alarm","talk","recruit","outpost","bellwether","spindle","ashline","service","foundry","archive","wake","quiet","stillworks","cistern","drowned","tidecourt","sump","market","depot","refuge","ashrail","customs","railcourt","registry","morrow","terminus","farline","thimble","latchwater","driftglass","bellhome","commons","yard","kiln","junction","ember_commons","deepcoil","coilward","charterwell","writwell","concordance","reservefall","reserve_commons","shieldline","marchhold","march_refuge","wallward","wayfarer","underway","spring","pump","travel","retreat","rest","rescue","tend"]: return false
 	if not order.get("target",null) is Array or order.target.size()!=2: return false
 	for i in 2:
 		if not _integer(order.target[i]): return false
@@ -8627,6 +8767,8 @@ func _order_valid(order, floors: Dictionary) -> bool:
 			if not extra.get("action","") in ["start","escort","screen"]:return false
 		"wayfarer":
 			if not extra.get("action","") in ["start","repair"]:return false
+		"underway":
+			if not extra.get("action","") in ["start","lit","hidden"]:return false
 		"travel":
 			if not _integer(extra.get("destination",null)) or extra.destination<0:return false
 			extra.destination=int(extra.destination)
@@ -8728,6 +8870,7 @@ func restore(text: String) -> bool:
 	if not saved.has("wallward_state"):saved.wallward_state=""
 	if not saved.has("wallward_timer"):saved.wallward_timer=0.0
 	if not saved.has("wayfarer_state"):saved.wayfarer_state=""
+	if not saved.has("underway_state"):saved.underway_state=""
 	if not saved.outpost_choice is String or not saved.outpost_choice in ["","aid","trade"]:return false
 	if not saved.bellwether_choice is String or not saved.bellwether_choice in ["","courier","maintenance"]:return false
 	if not saved.spindle_contact is String or not saved.spindle_contact in ["","recognized","breach"]:return false
@@ -8773,6 +8916,7 @@ func restore(text: String) -> bool:
 	if not saved.march_refuge_state is String or not saved.march_refuge_state in ["","assigned","guarded","sheltered","public","walled"]:return false
 	if not saved.wallward_state is String or not saved.wallward_state in ["","warning","escorted","screened","missed"]:return false
 	if not saved.wayfarer_state is String or not saved.wayfarer_state in ["","assigned","resident","hidden","public"]:return false
+	if not saved.underway_state is String or not saved.underway_state in ["","assigned","lit","hidden"]:return false
 	if not saved.drowned_timer is float and not saved.drowned_timer is int:return false
 	if not is_finite(float(saved.drowned_timer)) or float(saved.drowned_timer)<0 or float(saved.drowned_timer)>24:return false
 	saved.drowned_timer=float(saved.drowned_timer)
@@ -8900,6 +9044,7 @@ func restore(text: String) -> bool:
 	if saved.wallward_state!="" and not saved.march_refuge_state in ["guarded","sheltered","public","walled"]:return false
 	if saved.wayfarer_state!="" and not saved.wallward_state in ["escorted","screened","missed"]:return false
 	if saved.wayfarer_state in ["resident","hidden","public"] and saved.wayfarer_state!=_wayfarer_route(saved.wallward_state):return false
+	if saved.underway_state!="" and not saved.wayfarer_state in ["resident","hidden","public"]:return false
 	for field in ["traveler","rumor","signal","station_met","recruit_joined","market_recruit_joined","yard_recruit_joined","shieldline_recruit_joined","paused"]:
 		if not saved.get(field,null) is bool: return false
 	if not saved.get("seconds",null) is float and not saved.get("seconds",null) is int: return false
@@ -9219,6 +9364,16 @@ func restore(text: String) -> bool:
 			elif obj.kind=="wayfarer_repair":
 				if not obj.get("state","") in ["sealed","available","complete"]:return false
 			elif obj.kind=="wayfarer_exit":
+				if not obj.get("state","") in ["sealed","open"]:return false
+			elif obj.kind=="underway":
+				if not obj.get("state","") in ["waiting","assigned","lit","hidden"] or not obj.get("route","") in ["resident","hidden","public"]:return false
+			elif obj.kind=="underway_route":
+				if not obj.get("state","") in ["sealed","open","complete"] or not obj.get("route","") in ["resident","hidden","public"]:return false
+			elif obj.kind=="underway_cache":
+				if not obj.get("state","") in ["sealed","open","installed"]:return false
+			elif obj.kind in ["underway_light","underway_hide"]:
+				if not obj.get("state","") in ["sealed","available","complete"]:return false
+			elif obj.kind=="underway_exit":
 				if not obj.get("state","") in ["sealed","open"]:return false
 		var pump_marks=f.landmarks.filter(func(mark):return mark.get("kind","")=="pump_console")
 		if not pump_marks.is_empty():
@@ -9654,6 +9809,14 @@ func restore(text: String) -> bool:
 			if wayfarer_marks[0].state!=expected_wayfarer or wayfarer_marks[0].route!=_wayfarer_route(saved.wallward_state):return false
 		saved.floors["52"].name=theme_for(52)
 		_add_wayfarer(saved.floors["52"],saved.wayfarer_state,saved.wallward_state)
+	if saved.floors.has("53"):
+		var underway_marks=saved.floors["53"].landmarks.filter(func(mark):return mark.get("kind","")=="underway")
+		if underway_marks.size()>1:return false
+		if not underway_marks.is_empty():
+			var expected_underway=saved.underway_state if saved.underway_state!="" else "waiting"
+			if underway_marks[0].state!=expected_underway or underway_marks[0].route!=_underway_route(saved.wayfarer_state):return false
+		saved.floors["53"].name=theme_for(53)
+		_add_underway(saved.floors["53"],saved.underway_state,saved.wayfarer_state)
 	data = saved
 	navigation_cache.clear()
 	data.paused = true

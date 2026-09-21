@@ -1,20 +1,20 @@
-# Hollow native checkpoint — 0.70.0
+# Hollow native checkpoint — 0.71.0
 
 Canonical source: https://github.com/xDoomKitty/Hollow. Read AGENTS.md, DIRECTION.md and ROADMAP.md before editing. Preserve the earlier browser Site separately.
 
-Completed: **Guided First Expedition** turns the opening into four concrete world-state-backed steps: tap the traveler, tap and search Shelter supplies, move exactly 4 timber plus 2 scrap into one colonist's pack, and build a Workbench. The objective advances only when those physical actions actually happen and adds no new saved fields.
+Completed: **Underway Fork** at depth 54 carries Wayfarer history into resident, hidden or public approaches. Present the physical convoy tally, clear one burrower, one Gloam stalker or two husks, recover a 2 kg survey kit, and choose a lit bridge or shrouded bypass. The lit route consumes the kit with exactly 3 scrap and 2 glowstone, grants recovery and stores, and visibly draws two husks. The hidden route consumes the kit with exactly 2 timber and 3 rations, grants strong pressure shelter and creates no new incursion. Completion preserves the tally, issues one physical route token and opens the connected deeper road.
 
-Inventory rows now state exact ownership and unit weight. Selecting a quantity previews the source and destination, both before/after counts, total moved weight, and resulting pack load. The action button names its destination. Goods remain physically owned until the colonist reaches the container. Crew & Cargo, drag scrolling, tap-to-approach interaction, persistent separate packs and the full campaign through Wayfarer Commons remain intact.
+Physical cargo stays in its carrier's pack until work completes; cancellation consumes nothing. Threats, lighting, custody, exact quantities, benefits, topology, active work and older visited floors persist. Crew & Cargo, guided opening, drag scrolling, tap-to-approach interaction, exact transfer previews and the prior campaign remain intact.
 
-Validation: 79 simulation groups / 2,074 assertions and 1,674 native headless input/layout assertions passed. Godot import and Android/Windows/Linux exports passed after correcting the recovered Android SDK setting. See VALIDATION.md for coverage. Graphical startup remains unavailable (no X11/Wayland/Xvfb), and adb reports no devices; no Android/Windows device execution is claimed.
+Validation: 80 simulation groups / 2,148 assertions and 1,704 native headless input/layout assertions passed. Godot import and Android/Windows/Linux exports passed. See VALIDATION.md for coverage. Graphical startup remains unavailable, and adb reports no devices; no Android/Windows device execution is claimed.
 
-**Android 0.70 is built and verified.** Code 70 retains package `com.hollow.colony.prototype` and certificate SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`; v2/v3 signatures verify. No replacement key was generated. The signing preflight still refuses absent or mismatched keys.
+**Android 0.71 is built and verified.** Code 71 retains package `com.hollow.colony.prototype` and certificate SHA-256 `df7193174d83fa04c2be605ebcfb4c989c302fc714705674b449d3b60cbdef62`; v2/v3 signatures verify. No replacement key was generated. The signing preflight still refuses absent or mismatched keys.
 
-Android, Windows and Linux 0.70 packages are staged for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
+Android, Windows and Linux 0.71 packages are prepared for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
 
-Validated game revision: `be3db1c1161bc4baf6454e1a74d0ace8996f14bb`; later commits update release records only. Delivered 0.70 SHA-256: Android `75d0175065eb30751bd2c2806dd1149963258c1484d5929ac4bc5e90015fb0b6`; Windows `e56a623dba816b1782a4cdb72a030d0a2f78b2a9f36e0ca2a98c26cc594847e7`; Linux `a97102acedfea133037efa0cc20b6a31546dda166c2033e9825378041a0ff5ef`. Archives, notices, signing material exclusion and packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
+Validated game revision and delivered package hashes are recorded by the release-record commit after packaging. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
 
-Next: extend the Underway road with a new exploration decision that uses the clearer physical-transfer controls.
+Next: build **Underway Exchange**, where the route token changes settlement reception and a physical navigation-table repair.
 
 ## Source continuity
 
@@ -22,7 +22,7 @@ Repository source import commit: b1b23156d79c9cf401c4fa1d4611c1f6abeb7aac. It re
 
 Automatic approval review blocked installing a persistent GitHub Actions workflow with permission to merge and push to main. **No workflow is installed.** docs/GITHUB_IMPORT_WORKFLOW.md is a review-only proposal. Owner approval is needed before installing or running it. Ordinary source commits can continue; preserve both histories and never force-push.
 
-GitHub now stores current source, tests, docs and original asset generators. The saved 0.68 Hollow_Source.zip remains a historical fallback, not a second live source archive. Keep the private workstation index and working downloads in their existing identities with fresh version guards. The index records the exact published source revision and mixed platform versions. Exclude private signing material and toolchains.
+GitHub stores current source, tests, docs and original asset generators. The saved 0.68 Hollow_Source.zip remains a historical fallback, not a second live source archive. Keep the private workstation index and working downloads in their existing identities with fresh version guards. The index records the exact published source revision and platform versions. Exclude private signing material and toolchains.
 
 ## Recovery and commands
 

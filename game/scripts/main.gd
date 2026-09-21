@@ -312,6 +312,7 @@ func _process(dt):
 		elif event.kind == "march_refuge":show_march_refuge()
 		elif event.kind == "wallward":show_wallward()
 		elif event.kind == "wayfarer":show_wayfarer()
+		elif event.kind == "underway":show_underway()
 		else: sound(event.kind)
 	if not is_instance_valid(popup) and not interaction_dialogs.is_empty():
 		show_arrived_interaction(interaction_dialogs.pop_front())
@@ -446,6 +447,7 @@ func _refresh():
 			"march_refuge":action_button.text="Review refuge defense"
 			"wallward":action_button.text="Review convoy warning"
 			"wayfarer":action_button.text="Review shared repair"
+			"underway":action_button.text="Review road survey"
 			"structure":action_button.text="Manage "+str(World.RECIPES.get(selection.get("recipe",""),{"name":"structure"}).name).to_lower()
 			"bed": action_button.text = "Rest at bedroll"
 			"designation":action_button.text="Cancel blueprint"
@@ -532,6 +534,7 @@ func describe_order(order:Dictionary)->String:
 		"march_refuge":return "present Marchhold seal" if order.get("extra",{}).get("action","")=="start" else "donate folded wall" if order.get("extra",{}).get("action","")=="donate" else "repair refuge defense"
 		"wallward":return "signal Wallward convoy" if order.get("extra",{}).get("action","")=="start" else "escort Wallward convoy" if order.get("extra",{}).get("action","")=="escort" else "screen Wallward convoy"
 		"wayfarer":return "present convoy tally" if order.get("extra",{}).get("action","")=="start" else "repair shared roadstead"
+		"underway":return "open Underway survey" if order.get("extra",{}).get("action","")=="start" else "install waylights" if order.get("extra",{}).get("action","")=="lit" else "conceal bypass"
 		"dismantle":return "pack up "+str(World.RECIPES.get(order.get("extra",{}).get("recipe",""),{"name":"structure"}).name).to_lower()
 		"reset_alarm":return "reset tripwire alarm"
 		"rescue":return "rescue "+str(world.data.pawns[int(order.get("extra",{}).get("patient",0))].name)
@@ -1064,6 +1067,12 @@ func _select_map_target(tile: Vector2i,right: bool,select_people:bool=true):
 				var wayfarer_text=str(mark.get("description",mark.name))
 				if mark.kind!="wayfarer_lore":wayfarer_text+=" Status: "+str(mark.get("state","sealed"))+"."
 				selection={"kind":"lore","text":wayfarer_text};feedback(wayfarer_text)
+			elif mark.kind in ["underway","underway_light","underway_hide"]:
+				selection={"kind":"underway","point":world.arr(tile),"state":str(mark.get("state","waiting")),"route":str(mark.get("route","public"))}
+				feedback("Underway Fork · physical survey kit and exact route supplies.")
+			elif mark.kind in ["underway_route","underway_cache","underway_exit"]:
+				var underway_text=str(mark.get("description",mark.name))+" Status: "+str(mark.get("state","sealed"))+"."
+				selection={"kind":"lore","text":underway_text};feedback(underway_text)
 			else: world.data.rumor=true; feedback("Scratched into stone: 'The city still breathes. Follow the old mine shafts.'")
 			_refresh(); return
 	var f = world.floor_at(z)
@@ -1150,6 +1159,7 @@ func context_action():
 			"march_refuge":show_march_refuge()
 			"wallward":show_wallward()
 			"wayfarer":show_wayfarer()
+			"underway":show_underway()
 			"stairs": execute(world.order_travel(selected,selection.destination,queue_mode))
 			"structure":show_structure()
 			"designation":
@@ -1201,7 +1211,7 @@ func make_popup(title: String, width: int = 740) -> VBoxContainer:
 
 func close_popup():
 	if popup_kind == "intro": started = true
-	if popup_kind in ["intro","story","station","recruit","spring","pump","outpost","bellwether","spindle","ashline","service_ring","foundry","archive","wake","quiet","stillworks","cistern","drowned","tidecourt","sump","market","depot","refuge","ashrail","customs","railcourt","registry","morrow","terminus","farline","thimble","latchwater","driftglass","bellhome","commons","yard","kiln","junction","ember_commons","deepcoil","coilward","charterwell","writwell","concordance","reservefall","reserve_commons","shieldline","marchhold","march_refuge","wallward","wayfarer","structure"] and world:world.data.paused=false
+	if popup_kind in ["intro","story","station","recruit","spring","pump","outpost","bellwether","spindle","ashline","service_ring","foundry","archive","wake","quiet","stillworks","cistern","drowned","tidecourt","sump","market","depot","refuge","ashrail","customs","railcourt","registry","morrow","terminus","farline","thimble","latchwater","driftglass","bellhome","commons","yard","kiln","junction","ember_commons","deepcoil","coilward","charterwell","writwell","concordance","reservefall","reserve_commons","shieldline","marchhold","march_refuge","wallward","wayfarer","underway","structure"] and world:world.data.paused=false
 	if is_instance_valid(popup): popup.queue_free()
 	popup=null; popup_kind=""
 
@@ -2537,6 +2547,46 @@ func show_wayfarer():
 		var result=text_label(outcome+" The jack is installed, exact materials came from their owners, and the convoy tally stays carried. The Underway road is open.",20)
 		result.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;col.add_child(result)
 		col.add_child(button("Use Underway road",func():close_popup();world.data.paused=false;_refresh(),52,true))
+
+func show_underway():
+	var post=world.underway_landmark()
+	if post.is_empty():feedback("Underway Fork has not been reached.");return
+	world.data.paused=true
+	var col=make_popup("UNDERWAY FORK · ROAD SURVEY",980)
+	popup_kind="underway"
+	var pawn=world.data.pawns[selected];var state=str(world.data.underway_state);var route=str(post.get("route","public"))
+	var has_tally=int(pawn.inventory.get("convoy_tally",0))>0
+	if state=="":
+		var approach="Wayfarer's resident road reaches a lamp-marked bridge with one burrower." if route=="resident" else "Wayfarer's concealed road reaches a dark cartway watched by one Gloam stalker." if route=="hidden" else "Wayfarer's public road reaches a rubble fork held by two surface husks."
+		var intro=text_label(approach+"
+
+Present the carried convoy tally to open the survey. Clear the approach and recover a physical 2 kg survey kit before committing exact supplies.",18)
+		intro.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;col.add_child(intro)
+		var start=button("Present convoy tally · open survey",func():close_popup();world.data.paused=false;execute(world.order_underway(selected,"start",queue_mode));_refresh(),58,true)
+		start.disabled=not has_tally;col.add_child(start)
+		if start.disabled:col.add_child(text_label("The selected colonist must carry Wayfarer's physical convoy tally.",16,"e2a178"))
+	elif state=="assigned":
+		var threats=world.floor_at(53).enemies.filter(func(enemy):return enemy.hp>0 and enemy.has("underway_guard")).size()
+		var status=text_label("%d approach threats · selected tally %s · survey kit %d/1
+Selected pack: scrap %d · glowstone %d · timber %d · rations %d
+
+LIT BRIDGE · kit + 3 scrap + 2 glowstone. Strong recovery and useful stores; two surface husks are visibly drawn into the lower gallery.
+
+SHROUDED BYPASS · kit + 2 timber + 3 rations. Strong pressure shelter and no new incursion."%[threats,"carried" if has_tally else "missing",int(pawn.inventory.get("survey_kit",0)),int(pawn.inventory.get("scrap",0)),int(pawn.inventory.get("crystal",0)),int(pawn.inventory.get("timber",0)),int(pawn.inventory.get("rations",0))],17)
+		status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;col.add_child(status)
+		for choice in ["lit","hidden"]:
+			var problem=world.underway_error(selected,choice)
+			var label="Install waylights · spend kit + 3 scrap + 2 glowstone" if choice=="lit" else "Conceal bypass · spend kit + 2 timber + 3 rations"
+			var route_button=button(label,func(c=choice):close_popup();world.data.paused=false;execute(world.order_underway(selected,c,queue_mode));_refresh(),60,true)
+			route_button.disabled=problem!="";col.add_child(route_button)
+		var lit_error=world.underway_error(selected,"lit");var hidden_error=world.underway_error(selected,"hidden")
+		if lit_error!="" and lit_error==hidden_error:
+			var warning=text_label(lit_error,16,"e2a178");warning.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;col.add_child(warning)
+	else:
+		var outcome="Waylights mark a recoverable road, and the warned husks are now visible in the lower gallery." if state=="lit" else "The bypass stays dark, avoids a new incursion and shelters this floor from pressure."
+		var result=text_label(outcome+" Exact supplies were consumed only on completion. The installed kit became one physical route token in its surveyor's pack, and the deeper Underway is connected.",20)
+		result.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART;col.add_child(result)
+		col.add_child(button("Use deeper Underway",func():close_popup();world.data.paused=false;_refresh(),52,true))
 
 func show_blueprint():
 	var p=world.data.pawns[selected]

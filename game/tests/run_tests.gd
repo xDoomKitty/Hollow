@@ -50,7 +50,8 @@ func total_item(w,item:String)->int:
 		for c in f.containers:total+=int(c.items.get(item,0))
 	return total
 
-func test_wayfarer(priors:Array):
+func test_wayfarer(priors:Array)->Array:
+	var completed:Array=[]
 	group("Wayfarer Commons repairs a shared roadstead with physically separate packs")
 	for prior in priors:
 		var shared=fresh(1020);check(shared.restore(prior.serialize()),"Resolved convoy history loads for Wayfarer")
@@ -120,6 +121,61 @@ func test_wayfarer(priors:Array):
 		check(roundtrip.floor_at(52).grid==old_grid,"Legacy floor migration preserves every visited terrain tile")
 		check(roundtrip.floor_at(52).containers==old_caches,"Legacy floor migration preserves exact container ownership and quantities")
 		check(roundtrip.floor_at(52).landmarks.filter(func(mark):return mark.kind.begins_with("wayfarer")).size()==6,"Legacy floor migration adds one set of six roadstead landmarks")
+		completed.append(active_shared)
+	return completed
+
+func test_underway(priors:Array):
+	group("Underway Fork makes a physical lit-road or concealed-bypass decision")
+	for prior in priors:
+		var survey=fresh(1030);check(survey.restore(prior.serialize()),"Completed Wayfarer history loads for Underway");survey.data.paused=false;survey.ensure_floor(53)
+		var route=str(survey.data.wayfarer_state)
+		var floor=survey.floor_at(53);var post=survey.underway_landmark();var pawn=survey.data.pawns[0]
+		pawn.z=53;pawn.x=int(post.x)-1;pawn.y=int(post.y);pawn.inventory={"convoy_tally":1};survey.data.deepest=53;survey.reveal_all()
+		check(floor.name=="Underway Fork" and floor.rooms.size()==10 and post.route==route,"Wayfarer history creates a route-shaped bespoke road fork")
+		check(survey.order_travel(0,54)!="","The deeper road stays gated before a survey decision")
+		pawn.inventory={};check(survey.order_underway(0,"start")!="","Remembered history cannot replace the physical convoy tally")
+		pawn.inventory={"convoy_tally":1};check(survey.order_underway(0,"start")=="","The physical tally bearer can open the road survey");finish(survey)
+		var expected_guards=2 if route=="public" else 1
+		check(survey.data.underway_state=="assigned" and floor.enemies.filter(func(enemy):return enemy.has("underway_guard")).size()==expected_guards,"Prior road history changes the visible approach threats")
+		check(survey.underway_error(0,"lit").contains("Clear") and survey.underway_error(0,"hidden").contains("Clear"),"Both choices require clearing the approach first")
+		for enemy in floor.enemies:enemy.hp=0.0
+		var kit_case=floor.containers.filter(func(container):return container.name=="Underway survey case")[0]
+		pawn.x=int(kit_case.x)-1;pawn.y=int(kit_case.y);survey.reveal_all()
+		check(survey.order_transfer(0,int(kit_case.id),"take","survey_kit",1)!="","The physical survey case must be searched")
+		check(survey.order_search(0,int(kit_case.id))=="","Survey kit case accepts physical search");finish(survey)
+		take(survey,int(kit_case.id),"survey_kit",1)
+		var choice="hidden" if route=="hidden" else "lit";var target_kind="underway_hide" if choice=="hidden" else "underway_light"
+		var target=floor.landmarks.filter(func(mark):return mark.kind==target_kind)[0]
+		pawn.x=int(target.x)-1;pawn.y=int(target.y);pawn.inventory={"convoy_tally":1,"survey_kit":1}
+		check(survey.underway_error(0,choice)!="","The survey kit alone cannot fabricate route supplies")
+		if choice=="lit":pawn.inventory.scrap=3;pawn.inventory.crystal=2;pawn.inventory.rations=1
+		else:pawn.inventory.timber=2;pawn.inventory.rations=4
+		survey.reveal_all();var before=pawn.inventory.duplicate(true)
+		check(survey.order_underway(0,choice)=="" and pawn.inventory==before,"Starting survey work leaves every item physically owned")
+		survey.cancel(0);check(pawn.inventory==before,"Cancellation consumes no survey cargo")
+		check(survey.order_underway(0,choice)=="","A complete pack can restart the selected route");survey.tick(.2)
+		var active=fresh(1031);check(active.restore(survey.serialize()) and active.data.pawns[0].orders.any(func(order):return order.kind=="underway"),"Active Underway work survives save validation")
+		active.data.paused=false;finish_all(active);var finished=active.floor_at(53);var carrier=active.data.pawns[0]
+		check(active.data.underway_state==choice and carrier.inventory.get("convoy_tally",0)==1 and carrier.inventory.get("survey_kit",0)==0 and carrier.inventory.get("route_token",0)==1,"Completion consumes exact route cargo, preserves the tally and issues one physical token")
+		check(active.vec(finished.down)==active._underway_center(finished,9) and not active.path_to(53,active.vec(finished.up),active.vec(finished.down)).is_empty(),"The chosen route opens a connected deeper road")
+		if choice=="lit":
+			check(finished.structures.filter(func(structure):return bool(structure.get("underway_waylight",false))).size()==3 and finished.enemies.filter(func(enemy):return enemy.has("underway_follow")).size()==2,"The warned bright route installs three lights and draws exactly two husks")
+			for enemy in finished.enemies:enemy.hp=0.0
+			check(active.fatigue_rate(0)<0,"The cleared lit route grants recovery")
+		else:
+			finished.structures.append(active.make_structure("lamp",Vector2i(8,7)));var raw=float(active.pressure_report(53).rate)
+			active.data.underway_state="assigned";var open_rate=float(active.pressure_report(53).rate);active.data.underway_state="hidden"
+			check(raw<open_rate*.25,"The concealed route grants strong pressure shelter")
+		check(finished.containers.any(func(container):return container.name in ["Underway waylight issue","Underway concealed stores"]),"The decision opens one physical route-shaped supply issue")
+		check(active.order_travel(0,54)=="" and active.order_underway(0,choice)!="","Resolved survey opens travel and cannot duplicate its token");active.cancel(0)
+		active.reveal_all();active.data.paused=true
+		var roundtrip=fresh(1032);var active_bytes=active.serialize();var restored_underway=roundtrip.restore(active_bytes)
+		check(restored_underway and roundtrip.serialize()==active_bytes,"Underway "+route+" outcome, custody, threats and topology round-trip byte-for-byte")
+		var invalid=JSON.parse_string(active.serialize());invalid.wayfarer_state="";var safe=active.serialize()
+		check(not active.restore(JSON.stringify(invalid)) and active.serialize()==safe,"Underway progress without Wayfarer history is rejected atomically")
+		var legacy=JSON.parse_string(active.serialize());legacy.erase("underway_state");legacy.floors["53"].landmarks=legacy.floors["53"].landmarks.filter(func(mark):return not mark.kind.begins_with("underway"));var old_grid=active.floor_at(53).grid.duplicate(true)
+		var restored_legacy=roundtrip.restore(JSON.stringify(legacy));check(restored_legacy and roundtrip.data.underway_state=="","Older visited depth-fifty-four saves gain an unresolved Underway survey")
+		check(roundtrip.floor_at(53).grid==old_grid and roundtrip.floor_at(53).landmarks.filter(func(mark):return mark.kind.begins_with("underway")).size()==6,"Migration preserves visited terrain and adds one landmark set")
 
 func test_interaction_orders():
 	group("Object interaction walks, searches, and preserves physical choices and saves")
@@ -1960,7 +2016,8 @@ func _initialize():
 	var migrated_wallward=fresh(1014);check(migrated_wallward.restore(JSON.stringify(legacy_wallward)),"Older visited depth-fifty-two saves gain Wallward Descent without terrain regeneration");check(migrated_wallward.data.wallward_state=="" and migrated_wallward.floor_at(51).grid==legacy_wallward_grid and migrated_wallward.floor_at(51).landmarks.filter(func(mark):return mark.kind.begins_with("wallward")).size()==9,"Wallward migration preserves visited topology and adds one unresolved warned route")
 	var invalid_wallward=JSON.parse_string(escort_world.serialize());invalid_wallward.march_refuge_state="";check(not escort_world.restore(JSON.stringify(invalid_wallward)),"Wallward rejects progress without a resolved Marchhold Refuge history")
 
-	test_wayfarer([escort_world,screen_world,wallward_missed_world])
+	var wayfarer_worlds=test_wayfarer([escort_world,screen_world,wallward_missed_world])
+	test_underway(wayfarer_worlds)
 
 	group("Search requires physical arrival and elapsed work; fog is separate")
 	var w=fresh();var id=w.floor_at(0).containers[0].id

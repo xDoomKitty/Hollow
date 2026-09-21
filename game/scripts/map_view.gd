@@ -1005,6 +1005,30 @@ func _draw():
 			label_at(pos+Vector2(0,-24)*zoom,("UNDERWAY ROAD" if mark.kind=="wayfarer_exit" else str(mark.get("route","public")).to_upper()+" WAGON LANE")+" · "+str(mark.state).to_upper(),lane_color,8)
 		elif mark.kind=="wayfarer_lore":
 			draw_rect(Rect2(pos-Vector2(16,10)*zoom,Vector2(32,20)*zoom),Color("373126"));for x in [-7,7]:draw_line(pos+Vector2(x,-7)*zoom,pos+Vector2(x,7)*zoom,Color("e0b76f"),3*zoom);draw_line(pos+Vector2(-12,0)*zoom,pos+Vector2(12,0)*zoom,Color("8cd9c4"),2*zoom);label_at(pos+Vector2(0,-22)*zoom,"SHARED-LOAD LEDGER",Color("e0b76f"),8)
+		elif mark.kind=="underway":
+			var underway_state=str(mark.get("state","waiting"));var underway_color=Color("8fdcc8") if underway_state in ["lit","hidden"] else Color("efb15f")
+			draw_line(pos+Vector2(0,-14)*zoom,pos+Vector2(0,12)*zoom,underway_color,4*zoom);draw_circle(pos+Vector2(0,-14)*zoom,6*zoom,underway_color)
+			for x in [-10,10]:draw_line(pos,pos+Vector2(x,10)*zoom,underway_color,3*zoom)
+			label_at(pos+Vector2(0,-26)*zoom,"UNDERWAY SURVEY · "+underway_state.to_upper(),underway_color,8)
+		elif mark.kind=="underway_route":
+			var ur_color=Color("8fdcc8") if mark.get("state","")=="complete" else Color("e9a85f") if mark.get("state","")=="open" else Color("596165")
+			for y in [-8,0,8]:draw_line(pos+Vector2(-14,y)*zoom,pos+Vector2(14,y)*zoom,ur_color,3*zoom)
+			label_at(pos+Vector2(0,-23)*zoom,str(mark.get("route","public")).to_upper()+" APPROACH · "+str(mark.state).to_upper(),ur_color,8)
+		elif mark.kind=="underway_cache":
+			var kit_color=Color("8fdcc8") if mark.get("state","")=="installed" else Color("efb15f") if mark.get("state","")=="open" else Color("596165")
+			draw_rect(Rect2(pos-Vector2(14,10)*zoom,Vector2(28,20)*zoom),Color("2b3435"));draw_line(pos+Vector2(-9,-6)*zoom,pos+Vector2(9,6)*zoom,kit_color,5*zoom);draw_line(pos+Vector2(9,-6)*zoom,pos+Vector2(-9,6)*zoom,kit_color,5*zoom)
+			label_at(pos+Vector2(0,-22)*zoom,"SURVEY KIT · 2 KG",kit_color,8)
+		elif mark.kind in ["underway_light","underway_hide"]:
+			var choice_state=str(mark.get("state","sealed"));var choice_color=Color("8fdcc8") if choice_state=="complete" else Color("efb15f") if choice_state=="available" else Color("596165")
+			if mark.kind=="underway_light":
+				draw_circle(pos,11*zoom,choice_color);for angle in 8:draw_line(pos+Vector2.from_angle(angle*TAU/8.0)*14*zoom,pos+Vector2.from_angle(angle*TAU/8.0)*20*zoom,choice_color,3*zoom)
+			else:
+				draw_arc(pos,14*zoom,0,TAU,24,choice_color,4*zoom);draw_colored_polygon(PackedVector2Array([pos+Vector2(-12,8)*zoom,pos+Vector2(0,-10)*zoom,pos+Vector2(12,8)*zoom]),Color("293234"))
+			label_at(pos+Vector2(0,-24)*zoom,("WAYLIGHT BRIDGE" if mark.kind=="underway_light" else "SHROUDED BYPASS")+" · "+choice_state.to_upper(),choice_color,8)
+		elif mark.kind=="underway_exit":
+			var ux_color=Color("8fdcc8") if mark.get("state","")=="open" else Color("596165")
+			for i in 4:draw_line(pos+Vector2(-14+i*4,-10+i*5)*zoom,pos+Vector2(14,-10+i*5)*zoom,ux_color,3*zoom)
+			label_at(pos+Vector2(0,-23)*zoom,"DEEPER UNDERWAY · "+str(mark.state).to_upper(),ux_color,8)
 		elif mark.kind=="transit_sign":
 			draw_rect(Rect2(pos+Vector2(-15,-9)*zoom,Vector2(30,18)*zoom),Color("29393c"))
 			draw_rect(Rect2(pos+Vector2(-12,-6)*zoom,Vector2(24,12)*zoom),Color("b78c49"))
