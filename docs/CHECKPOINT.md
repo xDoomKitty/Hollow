@@ -12,7 +12,7 @@ Validation: 80 simulation groups / 2,148 assertions and 1,704 native headless in
 
 Android, Windows and Linux 0.71 packages are prepared for their existing download identities with engine notices. The preserved source archive remains the historical 0.68 fallback because GitHub is canonical; do not maintain a second live source archive.
 
-Validated game revision and delivered package hashes are recorded by the release-record commit after packaging. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
+Validated game revision: `3444f41616848fda3d7fd7234471dfac1ff22626`; later commits update release records only. Delivered 0.71 SHA-256: Android `a4912a4ee68e2712b6d9d2d7c427946f79e85f04933f6ccbe23ae2f367cb6329`; Windows `2d7461d7ac567a1650a6ae30f65e1268f4181d34dddda9ce5cd802972340789d`; Linux `ae2a2e2719bf2e4a7339143877420e85529c5c2e6630d1c8a4f654bcf6ce97f8`. Archives, notices, private-key exclusion, signatures and packaged Linux launch passed. If scratch disappears, rebuild from GitHub; no completed source work exists only in scratch.
 
 Next: build **Underway Exchange**, where the route token changes settlement reception and a physical navigation-table repair.
 
