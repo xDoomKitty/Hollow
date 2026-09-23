@@ -1,3 +1,9 @@
+# Latest release: Hollow 0.73
+
+**Source recovery notice:** The complete tested 0.73 source is preserved in [the 0.73 recovery bundle](.github/import/Hollow-0.73-update.bundle). [Restore instructions](docs/RELEASE_073_RECOVERY.md) identify the exact release commit. Ordinary source files on this branch still show 0.71 while the large-file synchronization remains blocked; restore the bundle before building or continuing development.
+
+---
+
 # Hollow 0.71 — Underway Fork
 
 A playable Godot prototype of an underground colony expedition. The title is provisional.
